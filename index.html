@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartFood – Ẩm Thực Thông Minh STEM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FDF6EC;
+    --warm-white: #FFFBF5;
+    --orange: #E8630A;
+    --orange-light: #F28B3A;
+    --orange-dark: #B84D06;
+    --brown: #3D1F0A;
+    --brown-mid: #7A3B10;
+    --green: #2D6A4F;
+    --green-light: #52B788;
+    --gold: #D4A017;
+    --text: #2A1506;
+    --text-muted: #7A5C40;
+    --border: rgba(61,31,10,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(253,246,236,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight:900;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--brown); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a {
+    text-decoration:none; color: var(--text-muted);
+    font-size: 0.875rem; font-weight:500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-btn {
+    background: var(--orange); color:#fff;
+    border: none; border-radius:50px;
+    padding: 0.5rem 1.25rem;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 0.875rem; font-weight:600;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+  }
+  .nav-btn:hover { background: var(--orange-dark); transform: scale(1.03); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 80px 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 70% 40%, #FDEBD0 0%, var(--cream) 70%);
+    z-index:0;
+  }
+  .hero-dots {
+    position:absolute; inset:0; z-index:0;
+    background-image: radial-gradient(circle, rgba(232,99,10,0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero-content { position:relative; z-index:1; max-width:620px; }
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(232,99,10,0.1);
+    color: var(--orange-dark);
+    border: 1px solid rgba(232,99,10,0.25);
+    border-radius: 50px; padding: 0.35rem 1rem;
+    font-size: 0.8rem; font-weight:600; letter-spacing:0.05em;
+    text-transform:uppercase; margin-bottom:1.5rem;
+  }
+  .hero-tag::before { content:''; width:6px;height:6px;border-radius:50%;background:var(--orange); }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem,7vw,5rem);
+    font-weight:900; line-height:1.1;
+    color: var(--brown);
+    margin-bottom:1.25rem;
+  }
+  h1 em { color:var(--orange); font-style:normal; }
+  .hero-desc {
+    font-size:1.05rem; color:var(--text-muted);
+    line-height:1.8; margin-bottom:2rem;
+    max-width:480px;
+  }
+  .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; }
+  .btn-primary {
+    background: var(--orange); color:#fff;
+    border:none; border-radius:50px;
+    padding:0.85rem 2rem; font-family:'Be Vietnam Pro',sans-serif;
+    font-size:0.95rem; font-weight:600;
+    cursor:pointer; transition:all 0.2s;
+    text-decoration:none; display:inline-block;
+  }
+  .btn-primary:hover { background:var(--orange-dark); transform:translateY(-2px); }
+  .btn-secondary {
+    background:transparent; color:var(--brown);
+    border:1.5px solid var(--border);
+    border-radius:50px; padding:0.85rem 2rem;
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-size:0.95rem; font-weight:500;
+    cursor:pointer; transition:all 0.2s;
+    text-decoration:none; display:inline-block;
+  }
+  .btn-secondary:hover { border-color:var(--orange); color:var(--orange); }
+
+  .hero-float {
+    position:absolute; right:5%; top:50%; transform:translateY(-50%);
+    z-index:1; display:flex; flex-direction:column; gap:1rem;
+    animation: floatY 4s ease-in-out infinite;
+  }
+  @keyframes floatY {
+    0%,100%{transform:translateY(-50%)}
+    50%{transform:translateY(calc(-50% - 16px))}
+  }
+  .food-card {
+    background:#fff; border-radius:20px;
+    border:1px solid var(--border);
+    padding:1.25rem 1.5rem;
+    display:flex; align-items:center; gap:1rem;
+    box-shadow: 0 8px 32px rgba(61,31,10,0.08);
+    min-width:220px;
+  }
+  .food-icon { font-size:2rem; }
+  .food-card-name { font-weight:600; font-size:0.9rem; color:var(--brown); }
+  .food-card-price { font-size:0.8rem; color:var(--orange); font-weight:600; }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width:1100px; margin:0 auto; }
+  .section-label {
+    font-size:0.75rem; font-weight:700; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--orange);
+    margin-bottom:0.75rem;
+  }
+  .section-title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.8rem,4vw,2.75rem);
+    font-weight:700; color:var(--brown);
+    line-height:1.2; margin-bottom:1rem;
+  }
+  .section-desc {
+    font-size:1rem; color:var(--text-muted);
+    line-height:1.8; max-width:560px;
+  }
+
+  /* STEM */
+  .stem-bg { background: var(--warm-white); }
+  .stem-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1.5rem; margin-top:3rem;
+  }
+  .stem-card {
+    border-radius:20px; padding:2rem;
+    position:relative; overflow:hidden;
+    transition: transform 0.25s;
+  }
+  .stem-card:hover { transform:translateY(-4px); }
+  .stem-card.s { background:#FFF3E0; border:1px solid #FFD180; }
+  .stem-card.t { background:#E8F5E9; border:1px solid #A5D6A7; }
+  .stem-card.e { background:#E3F2FD; border:1px solid #90CAF9; }
+  .stem-card.m { background:#FCE4EC; border:1px solid #F48FB1; }
+  .stem-letter {
+    font-family:'Playfair Display',serif;
+    font-size:4rem; font-weight:900; opacity:0.12;
+    position:absolute; right:1rem; bottom:-0.5rem; line-height:1;
+  }
+  .stem-card.s .stem-letter { color:#E65100; }
+  .stem-card.t .stem-letter { color:#1B5E20; }
+  .stem-card.e .stem-letter { color:#0D47A1; }
+  .stem-card.m .stem-letter { color:#880E4F; }
+  .stem-title {
+    font-weight:700; font-size:0.95rem; margin-bottom:0.5rem;
+    color:var(--brown);
+  }
+  .stem-subject {
+    font-size:0.75rem; font-weight:600; letter-spacing:0.05em;
+    text-transform:uppercase; margin-bottom:1rem;
+    opacity:0.6;
+  }
+  .stem-items { list-style:none; display:flex;flex-direction:column;gap:0.5rem; }
+  .stem-items li {
+    font-size:0.85rem; color:var(--text-muted);
+    display:flex; align-items:flex-start; gap:0.5rem;
+    line-height:1.5;
+  }
+  .stem-items li::before { content:'→'; color:var(--orange); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* MENU */
+  .menu-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem; flex-wrap:wrap; gap:1rem; }
+  .menu-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+  .menu-item {
+    background:#fff; border-radius:24px;
+    border:1px solid var(--border);
+    overflow:hidden; transition:transform 0.25s, box-shadow 0.25s;
+  }
+  .menu-item:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(61,31,10,0.12); }
+  .menu-thumb {
+    height:180px; display:flex; align-items:center; justify-content:center;
+    font-size:5rem; position:relative;
+  }
+  .menu-thumb.c1 { background:linear-gradient(135deg,#FFF8E1,#FFE0B2); }
+  .menu-thumb.c2 { background:linear-gradient(135deg,#FFF3E0,#FFCCBC); }
+  .menu-thumb.c3 { background:linear-gradient(135deg,#E8F5E9,#F1F8E9); }
+  .menu-thumb.c4 { background:linear-gradient(135deg,#FCE4EC,#F8BBD0); }
+  .menu-thumb.c5 { background:linear-gradient(135deg,#E3F2FD,#EDE7F6); }
+  .menu-badge {
+    position:absolute; top:12px; right:12px;
+    background:var(--orange); color:#fff;
+    font-size:0.7rem; font-weight:700;
+    padding:4px 10px; border-radius:50px;
+    text-transform:uppercase; letter-spacing:0.05em;
+  }
+  .menu-body { padding:1.25rem 1.5rem 1.5rem; }
+  .menu-name { font-weight:700; font-size:1.1rem; color:var(--brown); margin-bottom:0.35rem; }
+  .menu-desc { font-size:0.85rem; color:var(--text-muted); line-height:1.6; margin-bottom:1rem; }
+  .menu-nutrition { font-size:0.8rem; color:var(--green); font-weight:600; margin-bottom:0.5rem; }
+  .menu-method { font-size:0.8rem; color:var(--orange); font-weight:600; margin-bottom:1rem; }
+  .menu-stem {
+    display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.25rem;
+  }
+  .tag {
+    font-size:0.7rem; font-weight:600; letter-spacing:0.04em;
+    padding:3px 10px; border-radius:50px;
+    text-transform:uppercase;
+  }
+  .tag-s { background:#FFF3E0; color:#E65100; border:1px solid #FFD180; }
+  .tag-t { background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; }
+  .tag-e { background:#E3F2FD; color:#1565C0; border:1px solid #90CAF9; }
+  .tag-m { background:#FCE4EC; color:#AD1457; border:1px solid #F48FB1; }
+  .menu-footer { display:flex; justify-content:space-between; align-items:center; }
+  .menu-price { font-size:1.2rem; font-weight:700; color:var(--orange); }
+  .add-btn {
+    background:var(--orange); color:#fff; border:none;
+    width:36px; height:36px; border-radius:50%;
+    font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .add-btn:hover { background:var(--orange-dark); transform:scale(1.1); }
+
+  /* PROCESS */
+  .process-bg { background: var(--brown); color:#fff; }
+  .process-bg .section-title { color:#fff; }
+  .process-bg .section-desc { color:rgba(255,255,255,0.65); }
+  .process-tabs {
+    display:flex; gap:0.75rem; flex-wrap:wrap;
+    margin:2rem 0 2.5rem;
+  }
+  .ptab {
+    padding:0.5rem 1.25rem; border-radius:50px;
+    font-size:0.875rem; font-weight:600;
+    cursor:pointer; transition:all 0.2s;
+    border:1.5px solid rgba(255,255,255,0.2);
+    background:transparent; color:rgba(255,255,255,0.65);
+    font-family:'Be Vietnam Pro',sans-serif;
+  }
+  .ptab.active, .ptab:hover {
+    background:var(--orange); border-color:var(--orange); color:#fff;
+  }
+  .process-steps { display:none; }
+  .process-steps.active { display:flex; gap:0; flex-wrap:wrap; }
+  .step {
+    flex:1; min-width:140px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; position:relative; padding:1.5rem 1rem;
+  }
+  .step:not(:last-child)::after {
+    content:'→'; position:absolute; right:-12px; top:50%;
+    transform:translateY(-50%);
+    color:rgba(255,255,255,0.3); font-size:1.25rem;
+  }
+  .step-num {
+    width:48px; height:48px; border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    border:1.5px solid rgba(255,255,255,0.2);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Playfair Display',serif;
+    font-size:1.25rem; font-weight:700; color:#fff;
+    margin-bottom:0.75rem;
+  }
+  .step.highlight .step-num { background:var(--orange); border-color:var(--orange); }
+  .step-text { font-size:0.82rem; color:rgba(255,255,255,0.75); line-height:1.5; }
+  .step-label { font-size:0.9rem; font-weight:600; color:#fff; margin-bottom:0.35rem; }
+
+  /* QUEUE */
+  .queue-section { background: var(--warm-white); }
+  .queue-wrap { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+  @media(max-width:720px){ .queue-wrap{grid-template-columns:1fr;} }
+  .queue-form {
+    background:#fff; border-radius:24px;
+    border:1px solid var(--border);
+    padding:2rem;
+  }
+  .queue-form h3 {
+    font-family:'Playfair Display',serif;
+    font-size:1.4rem; font-weight:700; color:var(--brown);
+    margin-bottom:1.5rem;
+  }
+  .form-group { margin-bottom:1.25rem; }
+  .form-group label {
+    display:block; font-size:0.85rem; font-weight:600;
+    color:var(--text-muted); margin-bottom:0.5rem;
+  }
+  .form-group input, .form-group select {
+    width:100%; padding:0.75rem 1rem;
+    border:1.5px solid var(--border); border-radius:12px;
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-size:0.95rem; color:var(--text);
+    background:#fff; transition:border 0.2s;
+    outline:none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color:var(--orange); }
+  .submit-btn {
+    width:100%; background:var(--orange); color:#fff;
+    border:none; border-radius:50px; padding:0.9rem;
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-size:1rem; font-weight:700;
+    cursor:pointer; transition:all 0.2s;
+  }
+  .submit-btn:hover { background:var(--orange-dark); transform:translateY(-2px); }
+
+  .queue-display { display:flex; flex-direction:column; gap:1.5rem; }
+  .current-num {
+    background:var(--orange); color:#fff;
+    border-radius:24px; padding:2rem;
+    text-align:center;
+  }
+  .current-num .label { font-size:0.8rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8; margin-bottom:0.5rem; }
+  .current-num .number { font-family:'Playfair Display',serif; font-size:5rem; font-weight:900; line-height:1; }
+  .current-num .sub { font-size:0.85rem; opacity:0.8; margin-top:0.5rem; }
+  .queue-list {
+    background:#fff; border-radius:24px; border:1px solid var(--border);
+    padding:1.5rem; max-height:320px; overflow-y:auto;
+  }
+  .queue-list h4 { font-weight:700; color:var(--brown); margin-bottom:1rem; }
+  .queue-item {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:0.6rem 0; border-bottom:1px solid var(--border);
+    font-size:0.875rem;
+  }
+  .queue-item:last-child { border-bottom:none; }
+  .queue-item .qnum { font-weight:700; color:var(--orange); font-size:1rem; }
+  .queue-item .qname { color:var(--text-muted); }
+  .queue-item .qstatus {
+    font-size:0.75rem; font-weight:600; padding:3px 10px;
+    border-radius:50px;
+  }
+  .status-wait { background:#FFF3E0; color:#E65100; }
+  .status-ready { background:#E8F5E9; color:#2E7D32; }
+  .status-done { background:#F3E5F5; color:#6A1B9A; }
+  .queue-controls { display:flex; gap:0.75rem; flex-wrap:wrap; }
+  .ctrl-btn {
+    flex:1; padding:0.6rem 1rem; border-radius:50px;
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-size:0.85rem; font-weight:600;
+    cursor:pointer; transition:all 0.2s; border:none;
+  }
+  .ctrl-next { background:var(--green); color:#fff; }
+  .ctrl-next:hover { background:var(--green-light); }
+  .ctrl-reset { background:#fff; color:var(--text-muted); border:1.5px solid var(--border); }
+  .ctrl-reset:hover { border-color:var(--orange); color:var(--orange); }
+
+  /* FOOTER */
+  footer {
+    background:var(--brown); color:rgba(255,255,255,0.7);
+    padding:3rem 2rem; text-align:center;
+  }
+  footer .logo {
+    font-family:'Playfair Display',serif;
+    font-size:2rem; font-weight:900; color:#fff;
+    margin-bottom:0.5rem;
+  }
+  footer p { font-size:0.875rem; line-height:1.8; margin-bottom:0.35rem; }
+  footer .highlight { color:var(--orange-light); font-weight:600; }
+
+  /* ANIMATIONS */
+  .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.6s, transform 0.6s; }
+  .fade-in.visible { opacity:1; transform:none; }
+
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:2rem; right:2rem; z-index:200;
+    background:var(--brown); color:#fff;
+    border-radius:16px; padding:1rem 1.5rem;
+    font-size:0.9rem; font-weight:600;
+    box-shadow:0 8px 32px rgba(0,0,0,0.25);
+    transform:translateY(100px); opacity:0;
+    transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events:none;
+  }
+  .toast.show { transform:none; opacity:1; }
+  .toast .tn { color:var(--orange-light); font-size:1.2rem; margin-right:0.5rem; }
+
+  @media(max-width:768px){
+    .hero-float { display:none; }
+    .nav-links { display:none; }
+    .step:not(:last-child)::after { display:none; }
+    .step { min-width:100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Smart<span>Food</span></div>
+  <ul class="nav-links">
+    <li><a href="#home">Trang chủ</a></li>
+    <li><a href="#about">Giới thiệu</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#nutrition">Dinh dưỡng</a></li>
+    <li><a href="#process">Phương Pháp</a></li>
+    <li><a href="#queue">Order</a></li>
+  </ul>
+  <button class="nav-btn" onclick="document.getElementById('queue').scrollIntoView({behavior:'smooth'})">🛒 Order ngay</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content fade-in">
+    <div class="hero-tag">Dự án STEM – Ẩm thực thông minh</div>
+    <h1>Smart<em>Food</em><br>Ẩm Thực<br>Công Nghệ</h1>
+    <p class="hero-desc">Gian hàng ẩm thực kết hợp Khoa học – Công nghệ – Kỹ thuật – Toán học. Đặt hàng online, lấy số thứ tự thông minh, trải nghiệm ăn uống hiện đại.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn-primary">�️ Xem Menu</a>
+      <a href="#queue" class="btn-secondary">🛒 Đặt hàng ngay</a>
+    </div>
+  </div>
+  <div class="hero-float">
+    <div class="food-card">
+      <div class="food-icon">🌯</div>
+      <div><div class="food-card-name">Cơm cuộn</div><div class="food-card-price">15.000đ</div></div>
+    </div>
+    <div class="food-card">
+      <div class="food-icon">🍗</div>
+      <div><div class="food-card-name">Chân gà sả tắc</div><div class="food-card-price">20.000đ</div></div>
+    </div>
+    <div class="food-card">
+      <div class="food-icon">🧋</div>
+      <div><div class="food-card-name">Trà sữa</div><div class="food-card-price">18.000đ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Dự án SmartFood</div>
+      <h2 class="section-title">Ẩm Thực Thông Minh<br>Kết Hợp STEM</h2>
+      <p class="section-desc">Gian hàng ẩm thực sáng tạo, nơi khoa học gặp công nghệ. Khám phá dinh dưỡng, phương pháp chế biến khoa học và trải nghiệm đặt hàng thông minh.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:2rem; margin-top:3rem;">
+      <div class="fade-in" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:1rem;">🍽️</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; color:var(--brown); margin-bottom:0.5rem;">Menu Món Ăn</h3>
+        <p style="color:var(--text-muted); line-height:1.6;">5 món đặc trưng được chế biến thủ công, kết hợp hương vị truyền thống với khoa học hiện đại.</p>
+      </div>
+      <div class="fade-in" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:1rem;">🥗</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; color:var(--brown); margin-bottom:0.5rem;">Dinh Dưỡng</h3>
+        <p style="color:var(--text-muted); line-height:1.6;">Phân tích chi tiết giá trị dinh dưỡng, giúp bạn lựa chọn món ăn phù hợp với sức khỏe.</p>
+      </div>
+      <div class="fade-in" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:1rem;">🔬</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; color:var(--brown); margin-bottom:0.5rem;">Phương Pháp</h3>
+        <p style="color:var(--text-muted); line-height:1.6;">Áp dụng phương pháp chế biến khoa học theo sách giáo khoa, đảm bảo an toàn và chất lượng.</p>
+      </div>
+      <div class="fade-in" style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:1rem;">🛒</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.25rem; color:var(--brown); margin-bottom:0.5rem;">Order Online</h3>
+        <p style="color:var(--text-muted); line-height:1.6;">Đặt hàng thông minh với hệ thống real-time, theo dõi trạng thái đơn hàng tức thời.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU SECTION -->
+<section id="menu">
+  <div class="container">
+    <div class="menu-header fade-in">
+      <div>
+        <div class="section-label">Thực đơn hôm nay</div>
+        <h2 class="section-title">Menu Món Ăn<br>Dinh Dưỡng & Phương Pháp</h2>
+      </div>
+      <p class="section-desc" style="max-width:300px">Khám phá giá trị dinh dưỡng và phương pháp chế biến khoa học cho từng món ăn tươi ngon.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c1">🌯<div class="menu-badge">Bán chạy</div></div>
+        <div class="menu-body">
+          <div class="menu-name">Cơm cuộn</div>
+          <div class="menu-desc">Cơm Nhật cuộn rong biển, nhân trứng chiên, thanh cua và rau củ tươi. Chấm sốt mayonnaise tự làm.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 12g, Carbs 50g, Fat 8g, Calories 320kcal</div>
+          <div class="menu-method">Phương pháp: Cuốn sushi truyền thống (Hosomaki)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Tinh bột</span>
+            <span class="tag tag-e">E: Kỹ thuật cuộn</span>
+            <span class="tag tag-m">M: Định lượng</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">15.000đ</div>
+            <button class="add-btn" onclick="addToQueue('Cơm cuộn', 15000)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c2">🍗</div>
+        <div class="menu-body">
+          <div class="menu-name">Chân gà sả tắc</div>
+          <div class="menu-desc">Chân gà ngâm muối sả ớt tắc tươi, vị chua cay đặc trưng. Ướp 4 tiếng trước khi phục vụ.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 25g, Carbs 5g, Fat 12g, Calories 220kcal</div>
+          <div class="menu-method">Phương pháp: Ủ lạnh axit citric (Marinade)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Collagen, axit citric</span>
+            <span class="tag tag-t">T: Quy trình ướp</span>
+            <span class="tag tag-m">M: Thời gian & nhiệt độ</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">20.000đ</div>
+            <button class="add-btn" onclick="addToQueue('Chân gà sả tắc', 20000)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c3">🥛<div class="menu-badge">Healthy</div></div>
+        <div class="menu-body">
+          <div class="menu-name">Sữa chua</div>
+          <div class="menu-desc">Sữa chua tự làm từ sữa tươi + men sống, ủ 8 tiếng ở 42°C. Mịn, mát và giàu probiotic tự nhiên.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 8g, Carbs 12g, Fat 3g, Probiotic cao</div>
+          <div class="menu-method">Phương pháp: Lên men lactic (Fermentation)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Lên men lactic, pH</span>
+            <span class="tag tag-t">T: Kiểm soát nhiệt độ</span>
+            <span class="tag tag-m">M: Tỷ lệ pha chế</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">12.000đ</div>
+            <button class="add-btn" onclick="addToQueue('Sữa chua', 12000)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c4">🍮</div>
+        <div class="menu-body">
+          <div class="menu-name">Flan (Bánh caramel)</div>
+          <div class="menu-desc">Flan trứng hấp cách thủy với lớp caramel vàng óng. Texture mịn như nhung, vị ngọt dịu thanh.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 6g, Carbs 25g, Fat 8g, Calories 180kcal</div>
+          <div class="menu-method">Phương pháp: Hấp cách thủy (Bain-marie)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Protein biến tính nhiệt</span>
+            <span class="tag tag-e">E: Hấp cách thủy</span>
+            <span class="tag tag-m">M: Tỷ lệ trứng:sữa</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">10.000đ</div>
+            <button class="add-btn" onclick="addToQueue('Flan', 10000)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c5">🧋<div class="menu-badge">Signature</div></div>
+        <div class="menu-body">
+          <div class="menu-name">Trà sữa</div>
+          <div class="menu-desc">Trà sữa pha thủ công từ trà ô long, sữa tươi và đường đen. Có topping trân châu đen nấu mềm.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 4g, Carbs 35g, Fat 5g, Caffeine 50mg</div>
+          <div class="menu-method">Phương pháp: Nhũ tương trà sữa (Emulsion)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Chiết xuất tannin, nhũ tương</span>
+            <span class="tag tag-t">T: Pha chế tỷ lệ chuẩn</span>
+            <span class="tag tag-m">M: Tính giá thành</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">18.000đ</div>
+            <button class="add-btn" onclick="addToQueue('Trà sữa', 18000)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS SECTION -->
+<section class="process-bg" id="process">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label" style="color:var(--orange-light)">Phương pháp chế biến</div>
+      <h2 class="section-title">Quy Trình Khoa Học<br>Theo Sách Giáo Khoa</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học từ sách giáo khoa Công nghệ và Kỹ thuật thực phẩm.</p>
+    </div>
+    <div class="process-tabs">
+      <button class="ptab active" onclick="showProcess('com')">🌯 Cơm cuộn</button>
+      <button class="ptab" onclick="showProcess('ga')">🍗 Chân gà</button>
+      <button class="ptab" onclick="showProcess('sua')">🥛 Sữa chua</button>
+      <button class="ptab" onclick="showProcess('flan')">🍮 Flan</button>
+      <button class="ptab" onclick="showProcess('tra')">🧋 Trà sữa</button>
+    </div>
+
+    <div id="proc-com" class="process-steps active fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Chuẩn bị</div><div class="step-text">Vo gạo, nấu cơm Nhật, để nguội</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Sơ chế</div><div class="step-text">Cắt nhân, chiên trứng, luộc thanh cua</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Cuộn</div><div class="step-text">Trải nori, dàn đều cơm, xếp nhân, cuộn chặt</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Cắt lát</div><div class="step-text">Cắt 6–8 miếng bằng dao ướt</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Bày đĩa, kèm sốt mayo, giao khách</div></div>
+    </div>
+    <div id="proc-ga" class="process-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Sơ chế</div><div class="step-text">Rửa chân gà, cắt móng, chần sơ với gừng</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Pha nước ngâm</div><div class="step-text">Trộn tắc, sả, ớt, muối, đường theo tỷ lệ</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ngâm 4h</div><div class="step-text">Ngâm lạnh ở 4°C, ít nhất 4 giờ</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Kiểm tra</div><div class="step-text">Kiểm tra vị, thêm gia vị nếu cần</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Đóng gói</div><div class="step-text">Cho vào hộp, dán nhãn, giao khách</div></div>
+    </div>
+    <div id="proc-sua" class="process-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Đun sữa</div><div class="step-text">Đun sữa tươi đến 90°C, để nguội 42°C</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Cho men</div><div class="step-text">Trộn đều men sữa chua vào sữa đã nguội</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 8 tiếng</div><div class="step-text">Giữ 42°C trong 8h – vi khuẩn lên men</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Làm lạnh</div><div class="step-text">Chuyển tủ lạnh 4°C để đông kết gel</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Múc ra ly, thêm topping tuỳ chọn</div></div>
+    </div>
+    <div id="proc-flan" class="process-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Nấu caramel</div><div class="step-text">Đun đường đến 180°C tạo màu vàng nâu</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Hỗn hợp trứng</div><div class="step-text">Đánh 3 trứng + 250ml sữa + đường + vani</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Lọc & đổ khuôn</div><div class="step-text">Lọc qua rây mịn để loại bọt khí</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Hấp cách thủy</div><div class="step-text">Hấp 160°C trong 35 phút, đậy giấy bạc</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Lạnh & úp</div><div class="step-text">Để nguội, lạnh 2h, úp ra đĩa</div></div>
+    </div>
+    <div id="proc-tra" class="process-steps">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Pha trà</div><div class="step-text">Hãm trà ô long 90°C trong 3 phút</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Nấu trân châu</div><div class="step-text">Nấu trân châu 20 phút, ngâm đường đen</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Pha chế</div><div class="step-text">Lắc đều trà + sữa tươi + đường + đá viên</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Topping</div><div class="step-text">Thêm trân châu, kem cheese (tuỳ chọn)</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Đóng nắp, cắm ống hút, giao khách</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NUTRITION SECTION -->
+<section style="background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);" id="nutrition">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Dinh dưỡng thông minh</div>
+      <h2 class="section-title">Giá Trị Dinh Dưỡng<br>Của Từng Món</h2>
+      <p class="section-desc">Phân tích chi tiết thành phần dinh dưỡng, giúp bạn lựa chọn món ăn phù hợp với nhu cầu sức khỏe và dinh dưỡng hàng ngày.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:3rem;">
+      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
+        <div style="font-size:2rem; margin-bottom:1rem;">🥗</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Món Ăn Healthy</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Sữa chua, flan với hàm lượng protein cao, ít tinh bột, phù hợp cho người ăn kiêng hoặc cần tăng cơ.</p>
+        <div style="font-size:0.9rem; color:var(--green); font-weight:600;">Protein: 6-8g | Fat: 3-8g | Carbs: 12-25g</div>
+      </div>
+      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
+        <div style="font-size:2rem; margin-bottom:1rem;">🍗</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Món Ăn Nhanh Năng Lượng</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Chân gà, cơm cuộn cung cấp protein và tinh bột, lý tưởng cho người vận động nhiều hoặc cần năng lượng.</p>
+        <div style="font-size:0.9rem; color:var(--orange); font-weight:600;">Protein: 12-25g | Fat: 8-12g | Carbs: 5-50g</div>
+      </div>
+      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
+        <div style="font-size:2rem; margin-bottom:1rem;">🧋</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Đồ Uống Giải Khát</h3>
+        <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Trà sữa với caffeine và đường, phù hợp cho những lúc cần tỉnh táo nhưng cần chú ý lượng đường.</p>
+        <div style="font-size:0.9rem; color:var(--gold); font-weight:600;">Carbs: 35g | Caffeine: 50mg | Calories: ~250kcal</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEM SECTION -->
+<section class="stem-bg" id="stem">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Kết nối kiến thức</div>
+      <h2 class="section-title">Khám phá STEM<br>qua từng món ăn</h2>
+      <p class="section-desc">Mỗi món ăn là một bài học tích hợp – từ hóa học vi sinh, công nghệ chế biến, thiết kế kỹ thuật đến tính toán kinh tế.</p>
+    </div>
+    <div class="stem-grid">
+      <div class="stem-card s fade-in">
+        <div class="stem-letter">S</div>
+        <div class="stem-subject">Science – Khoa học</div>
+        <div class="stem-title">Cơ sở khoa học tự nhiên</div>
+        <ul class="stem-items">
+          <li>Sữa chua: lên men lactic, pH axit, vi khuẩn Lactobacillus</li>
+          <li>Flan: protein trứng biến tính nhiệt, cấu trúc gel</li>
+          <li>Trà sữa: hòa tan, nhũ tương, chiết xuất tannin từ lá trà</li>
+          <li>Chân gà: phản ứng collagen, tác dụng của axit citric trong tắc</li>
+        </ul>
+      </div>
+      <div class="stem-card t fade-in">
+        <div class="stem-letter">T</div>
+        <div class="stem-subject">Technology – Công nghệ</div>
+        <div class="stem-title">Ứng dụng Tin học & Công nghệ</div>
+        <ul class="stem-items">
+          <li>Website menu online, đặt hàng qua QR code</li>
+          <li>Thiết kế đồ họa (logo, banner, tờ rơi) bằng Canva/Photoshop</li>
+          <li>Hệ thống lấy số thứ tự tự động với Google Forms + Sheets</li>
+          <li>Quy trình sản xuất thể hiện bằng sơ đồ flowchart số</li>
+        </ul>
+      </div>
+      <div class="stem-card e fade-in">
+        <div class="stem-letter">E</div>
+        <div class="stem-subject">Engineering – Kỹ thuật</div>
+        <div class="stem-title">Thiết kế & tổ chức hệ thống</div>
+        <ul class="stem-items">
+          <li>Thiết kế bao bì, hộp đựng, que xiên, hộp flan</li>
+          <li>Bố trí mặt bằng gian hàng hợp lý, an toàn thực phẩm</li>
+          <li>Quy trình chuẩn hóa chế biến theo tiêu chuẩn vệ sinh</li>
+          <li>Thiết bị chế biến: tủ lạnh, lò hấp, máy đánh trứng</li>
+        </ul>
+      </div>
+      <div class="stem-card m fade-in">
+        <div class="stem-letter">M</div>
+        <div class="stem-subject">Mathematics – Toán học</div>
+        <div class="stem-title">Tính toán & phân tích số liệu</div>
+        <ul class="stem-items">
+          <li>Định lượng nguyên liệu, tính chi phí sản xuất mỗi phần</li>
+          <li>Tính giá bán, lợi nhuận theo % và doanh thu dự kiến</li>
+          <li>Vẽ biểu đồ thống kê doanh thu, số lượng bán theo thời gian</li>
+          <li>Phân tích tỷ lệ phần trăm, lập bảng Excel quản lý kho</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUEUE SECTION -->
+<section class="queue-section" id="queue">
+  <div class="container">
+    <div class="fade-in" style="margin-bottom:3rem">
+      <div class="section-label">Đặt hàng thông minh</div>
+      <h2 class="section-title">Order Online<br>Real-time</h2>
+      <p class="section-desc">Đặt món online, theo dõi trạng thái real-time. Công nghệ SSE đảm bảo cập nhật tức thời không cần refresh.</p>
+      <div style="margin-top:1rem">
+        <span id="sseStatus" style="font-size:0.8rem;font-weight:600;color:var(--text-muted);background:rgba(61,31,10,0.06);padding:4px 12px;border-radius:50px;border:1px solid var(--border)">🟡 Đang kết nối…</span>
+      </div>
+    </div>
+    <div class="queue-wrap">
+      <div class="queue-form fade-in">
+        <h3>� Đặt món & Order</h3>
+        <div class="form-group">
+          <label>Họ tên của bạn</label>
+          <input type="text" id="custName" placeholder="VD: Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+          <label>Chọn món</label>
+          <select id="custDish">
+            <option value="Cơm cuộn – 15.000đ">🌯 Cơm cuộn – 15.000đ</option>
+            <option value="Chân gà sả tắc – 20.000đ">🍗 Chân gà sả tắc – 20.000đ</option>
+            <option value="Sữa chua – 12.000đ">🥛 Sữa chua – 12.000đ</option>
+            <option value="Flan – 10.000đ">🍮 Flan – 10.000đ</option>
+            <option value="Trà sữa – 18.000đ">🧋 Trà sữa – 18.000đ</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Số lượng</label>
+          <input type="number" id="custQty" value="1" min="1" max="5">
+        </div>
+        <button class="submit-btn" onclick="registerQueue()">🛒 Đặt hàng ngay</button>
+      </div>
+
+      <div class="queue-display fade-in">
+        <div class="current-num">
+          <div class="label">⚡ Đang phục vụ số</div>
+          <div class="number" id="currentNum">–</div>
+          <div class="sub" id="currentName">Chưa có đơn nào</div>
+        </div>
+        <div style="display:flex;gap:0.75rem">
+          <button class="ctrl-btn ctrl-next" onclick="nextQueue()">▶ Gọi số tiếp theo</button>
+          <button class="ctrl-btn ctrl-reset" onclick="resetQueue()">↺ Đặt lại</button>
+        </div>
+        <div class="queue-list">
+          <h4>📋 Danh sách chờ</h4>
+          <div id="queueList"><p style="color:var(--text-muted);font-size:0.875rem">Chưa có đơn nào trong danh sách.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">SmartFood</div>
+  <p>Dự án STEM – Gian hàng ẩm thực thông minh</p>
+  <p><span class="highlight">Khoa Công nghệ Thông tin</span> • Trường Đại học Phạm Văn Đồng</p>
+  <p style="margin-top:1rem;font-size:0.8rem;opacity:0.5">Kết hợp Khoa học · Công nghệ · Kỹ thuật · Toán học</p>
+</footer>
+
+<div class="toast" id="toast"><span class="tn" id="toastNum"></span><span id="toastMsg"></span></div>
+
+<script>
+  /* ── Fade-in observer ────────────────────────────────────────────────── */
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')),
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  /* ── Process tabs ────────────────────────────────────────────────────── */
+  function showProcess(id) {
+    document.querySelectorAll('.process-steps').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.ptab').forEach(el => el.classList.remove('active'));
+    document.getElementById('proc-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  /* ── Toast ───────────────────────────────────────────────────────────── */
+  let _toastTimer;
+  function showToast(num, msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastNum').textContent = num;
+    document.getElementById('toastMsg').textContent = ' ' + msg;
+    t.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* ── Connection status badge ─────────────────────────────────────────── */
+  function setStatus(status) {
+    const el = document.getElementById('sseStatus');
+    if (!el) return;
+    const map = {
+      connecting: ['🟡', 'Đang kết nối…'],
+      live:       ['🟢', 'Live – real-time'],
+      offline:    ['🔴', 'Mất kết nối – đang thử lại'],
+    };
+    const [icon, text] = map[status] ?? map.offline;
+    el.textContent = `${icon} ${text}`;
+  }
+
+  /* ── Render queue state (called on every SSE "state" event) ─────────── */
+  function renderQueue(state) {
+    const { queue, serving } = state;
+    const cur     = document.getElementById('currentNum');
+    const curName = document.getElementById('currentName');
+    const list    = document.getElementById('queueList');
+
+    cur.textContent = serving > 0 ? String(serving).padStart(3, '0') : '–';
+    const sItem = queue.find(q => q.num === serving);
+    curName.textContent = sItem
+      ? `${sItem.name} – ${sItem.dish}`
+      : (serving > 0 ? '' : 'Chưa có đơn nào');
+
+    if (queue.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem">Chưa có đơn nào trong danh sách.</p>';
+      return;
+    }
+    list.innerHTML = queue.map(q => {
+      let sc = 'status-wait', sl = 'Đang chờ';
+      if (q.num === serving) { sc = 'status-ready'; sl = 'Đang phục vụ'; }
+      if (q.num < serving)   { sc = 'status-done';  sl = 'Hoàn tất'; }
+      return `<div class="queue-item">
+        <span class="qnum">#${String(q.num).padStart(3,'0')}</span>
+        <span class="qname">${q.name} – ${q.dish}</span>
+        <span class="qstatus ${sc}">${sl}</span>
+      </div>`;
+    }).join('');
+  }
+
+  /* ── SSE connection ──────────────────────────────────────────────────── */
+  let _es;
+
+  function connectSSE() {
+    setStatus('connecting');
+    _es = new EventSource('/api/events');
+
+    /* "state" event → re-render for ALL clients */
+    _es.addEventListener('state', e => {
+      renderQueue(JSON.parse(e.data));
+      setStatus('live');
+    });
+
+    /* "toast" event → show notification for ALL clients */
+    _es.addEventListener('toast', e => {
+      const { num, msg } = JSON.parse(e.data);
+      showToast(num, msg);
+    });
+
+    _es.onerror = () => {
+      setStatus('offline');
+      /* EventSource auto-reconnects — we just update the badge */
+    };
+
+    _es.onopen = () => setStatus('live');
+  }
+
+  connectSSE();
+
+  /* ── POST helper (fire-and-forget; SSE does the UI update) ──────────── */
+  async function queueAction(body) {
+    await fetch('/api/queue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).catch(err => console.error('[queue] POST failed', err));
+    /* State update arrives via SSE broadcast — no need to handle response */
+  }
+
+  /* ── Public actions (called from HTML onclick) ───────────────────────── */
+  function registerQueue() {
+    const name = document.getElementById('custName').value.trim();
+    const dish = document.getElementById('custDish').value;
+    const qty  = parseInt(document.getElementById('custQty').value) || 1;
+    //if (!name) { alert('Vui lòng nhập tên!'); return; }
+    queueAction({ action: 'register', name, dish, qty });
+    document.getElementById('custName').value = '';
+  }
+
+  function nextQueue() {
+    queueAction({ action: 'next' });
+  }
+
+  function resetQueue() {
+    if (!confirm('Xác nhận đặt lại toàn bộ hàng chờ?')) return;
+    queueAction({ action: 'reset' });
+  }
+
+  function addToQueue(name) {
+    const opts = [...document.getElementById('custDish').options];
+    const match = opts.find(o => o.value.includes(name.split(' ')[0]));
+    if (match) document.getElementById('custDish').value = match.value;
+    document.getElementById('queue').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
