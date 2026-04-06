@@ -1101,6 +1101,13 @@
   }
 
   /* ── Render queue state (called on every SSE "state" event) ─────────── */
+  function parseDish(raw) {
+    // Format: "🌯 Cơm cuộn ×2, 🥛 Sữa chua ×1|||42000"  OR legacy plain string
+    const sep = (raw || '').indexOf('|||');
+    if (sep === -1) return { items: raw || '', total: null };
+    return { items: raw.slice(0, sep), total: parseInt(raw.slice(sep + 3)) || null };
+  }
+
   function renderQueue(state) {
     const { queue, serving } = state;
     const cur     = document.getElementById('currentNum');
@@ -1109,9 +1116,12 @@
 
     cur.textContent = serving > 0 ? String(serving).padStart(3, '0') : '–';
     const sItem = queue.find(q => q.num === serving);
-    curName.textContent = sItem
-      ? `${sItem.name} – ${sItem.dish}`
-      : (serving > 0 ? '' : 'Chưa có đơn nào');
+    if (sItem) {
+      const { items } = parseDish(sItem.dish);
+      curName.textContent = `${sItem.name} – ${items}`;
+    } else {
+      curName.textContent = serving > 0 ? '' : 'Chưa có đơn nào';
+    }
 
     if (queue.length === 0) {
       list.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem">Chưa có đơn nào trong danh sách.</p>';
@@ -1121,12 +1131,16 @@
       let sc = 'status-wait', sl = 'Đang chờ';
       if (q.num === serving) { sc = 'status-ready'; sl = 'Đang phục vụ'; }
       if (q.num < serving)   { sc = 'status-done';  sl = 'Hoàn tất'; }
-      const totalStr = q.total ? `<span class="queue-item-total">💰 ${Number(q.total).toLocaleString('vi-VN')}đ</span>` : '';
+      const { items, total } = parseDish(q.dish);
+      const totalBadge = total
+        ? `<span class="queue-item-total">💰 ${total.toLocaleString('vi-VN')}đ</span>`
+        : '';
       return `<div class="queue-item">
         <span class="qnum">#${String(q.num).padStart(3,'0')}</span>
         <span class="qname">${q.name}</span>
         <span class="qstatus ${sc}">${sl}</span>
-        <div class="queue-item-row2">${q.dish} ${totalStr}</div>
+        <div class="queue-item-row2">${items}</div>
+        ${total ? `<div class="queue-item-row2" style="padding-top:0.15rem">${totalBadge}</div>` : ''}
       </div>`;
     }).join('');
   }
@@ -1174,10 +1188,12 @@
   function registerQueue() {
     const name = document.getElementById('custName').value.trim() || 'Khách';
     if (cart.length === 0) { alert('Vui lòng thêm ít nhất 1 món!'); return; }
-    const dish  = cart.map(c => `${c.label} ×${c.qty}`).join(', ');
-    const qty   = cart.reduce((s, c) => s + c.qty, 0);
-    const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    queueAction({ action: 'register', name, dish, qty, total });
+    const dishItems = cart.map(c => `${c.label} ×${c.qty}`).join(', ');
+    const qty       = cart.reduce((s, c) => s + c.qty, 0);
+    const total     = cart.reduce((s, c) => s + c.price * c.qty, 0);
+    // Embed total into dish string so backend preserves it: "món A ×2, món B ×1|||42000"
+    const dish = `${dishItems}|||${total}`;
+    queueAction({ action: 'register', name, dish, qty });
     cart = [];
     renderCart();
     document.getElementById('custName').value = '';
@@ -1199,7 +1215,7 @@
   }
 
   /* ── Password modal ──────────────────────────────────────────────────── */
-  const ADMIN_PW = '123';
+  const ADMIN_PW = '@Aa123456';
 
   function showPasswordModal() {
     document.getElementById('pwInput').value = '';
