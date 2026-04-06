@@ -228,6 +228,8 @@
   .menu-thumb.c3 { background:linear-gradient(135deg,#E8F5E9,#F1F8E9); }
   .menu-thumb.c4 { background:linear-gradient(135deg,#FCE4EC,#F8BBD0); }
   .menu-thumb.c5 { background:linear-gradient(135deg,#E3F2FD,#EDE7F6); }
+  .menu-thumb.c6 { background:linear-gradient(135deg,#F3E5F5,#E8EAF6); }
+  .menu-thumb.c7 { background:linear-gradient(135deg,#E0F7FA,#E8F5E9); }
   .menu-badge {
     position:absolute; top:12px; right:12px;
     background:var(--orange); color:#fff;
@@ -354,24 +356,92 @@
   .current-num .sub { font-size:0.85rem; opacity:0.8; margin-top:0.5rem; }
   .queue-list {
     background:#fff; border-radius:24px; border:1px solid var(--border);
-    padding:1.5rem; max-height:320px; overflow-y:auto;
+    padding:1.5rem; max-height:380px; overflow-y:auto;
   }
   .queue-list h4 { font-weight:700; color:var(--brown); margin-bottom:1rem; }
-  .queue-item {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0.6rem 0; border-bottom:1px solid var(--border);
-    font-size:0.875rem;
+
+  /* TABLE */
+  .queue-table {
+    width:100%; border-collapse:collapse; font-size:0.825rem;
   }
-  .queue-item:last-child { border-bottom:none; }
-  .queue-item .qnum { font-weight:700; color:var(--orange); font-size:1rem; }
-  .queue-item .qname { color:var(--text-muted); }
-  .queue-item .qstatus {
-    font-size:0.75rem; font-weight:600; padding:3px 10px;
-    border-radius:50px;
+  .queue-table thead tr {
+    border-bottom:2px solid var(--border);
   }
-  .status-wait { background:#FFF3E0; color:#E65100; }
+  .queue-table thead th {
+    padding:0.45rem 0.6rem; text-align:left;
+    font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--text-muted);
+    white-space:nowrap;
+  }
+  .queue-table tbody tr {
+    border-bottom:1px solid var(--border);
+    transition:background 0.15s;
+  }
+  .queue-table tbody tr:last-child { border-bottom:none; }
+  .queue-table tbody tr:hover { background:#FFFBF5; }
+  .queue-table td {
+    padding:0.55rem 0.6rem; vertical-align:middle;
+  }
+  /* Col: số bàn */
+  .qt-num {
+    font-weight:800; color:var(--orange); font-size:0.9rem;
+    white-space:nowrap;
+  }
+  /* Col: tên */
+  .qt-name {
+    font-weight:600; color:var(--brown);
+    max-width:90px; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap;
+  }
+  /* Col: trạng thái */
+  .qt-status { white-space:nowrap; }
+  .qt-status span {
+    font-size:0.72rem; font-weight:600; padding:3px 9px;
+    border-radius:50px; white-space:nowrap;
+  }
+  .status-wait  { background:#FFF3E0; color:#E65100; }
   .status-ready { background:#E8F5E9; color:#2E7D32; }
-  .status-done { background:#F3E5F5; color:#6A1B9A; }
+  .status-done  { background:#F3E5F5; color:#6A1B9A; }
+  /* Col: món – truncate + tooltip */
+  .qt-dish { max-width:160px; }
+  .dish-wrap {
+    position:relative; display:inline-block;
+    max-width:100%; cursor:default;
+  }
+  .dish-text {
+    display:block; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap;
+    color:var(--text-muted); max-width:160px;
+    font-size:0.8rem;
+  }
+  .dish-tooltip {
+    display:none;
+    position:absolute; left:0; top:calc(100% + 6px); z-index:300;
+    background:var(--brown); color:#fff;
+    border-radius:10px; padding:0.55rem 0.8rem;
+    font-size:0.78rem; line-height:1.6;
+    min-width:180px; max-width:260px;
+    white-space:normal; word-break:break-word;
+    box-shadow:0 8px 24px rgba(61,31,10,0.2);
+    pointer-events:none;
+  }
+  .dish-tooltip::before {
+    content:'';
+    position:absolute; top:-5px; left:14px;
+    border:5px solid transparent;
+    border-top:none; border-bottom-color:var(--brown);
+    width:0; height:0;
+  }
+  .dish-wrap:hover .dish-tooltip { display:block; }
+  /* Col: tổng tiền */
+  .qt-total {
+    font-weight:700; color:var(--green);
+    white-space:nowrap; text-align:right;
+    font-size:0.85rem;
+  }
+
+  /* QUEUE ITEM TOTAL (legacy - keep for safety) */
+  .queue-item-total { font-weight:700; color:var(--green); font-size:0.82rem; }
   .queue-controls { display:flex; gap:0.75rem; flex-wrap:wrap; }
   .ctrl-btn {
     flex:1; padding:0.6rem 1rem; border-radius:50px;
@@ -451,16 +521,6 @@
     text-align:center; color:var(--text-muted);
     font-size:0.85rem; padding:0.5rem 0 1.25rem;
   }
-  /* QUEUE ITEM TOTAL */
-  .queue-item { flex-wrap:wrap; gap:0.3rem 0; }
-  .queue-item-row2 {
-    width:100%; font-size:0.78rem; color:var(--text-muted);
-    padding-bottom:0.2rem; line-height:1.4;
-  }
-  .queue-item-total {
-    font-weight:700; color:var(--green); font-size:0.82rem;
-  }
-
   /* PASSWORD MODAL */
   .pw-overlay {
     position:fixed; inset:0; z-index:500;
@@ -594,16 +654,16 @@
   </div>
   <div class="hero-float">
     <div class="food-card">
-      <div class="food-icon">🌯</div>
-      <div><div class="food-card-name">Cơm cuộn</div><div class="food-card-price">15.000đ</div></div>
+      <div class="food-icon">🥛</div>
+      <div><div class="food-card-name">Sữa chua mix thạch</div><div class="food-card-price">10k/chai · 5k/hũ</div></div>
     </div>
     <div class="food-card">
-      <div class="food-icon">🍗</div>
-      <div><div class="food-card-name">Chân gà sả tắc</div><div class="food-card-price">20.000đ</div></div>
+      <div class="food-icon">🌯</div>
+      <div><div class="food-card-name">Cơm cuộn</div><div class="food-card-price">25.000đ/hộp</div></div>
     </div>
     <div class="food-card">
       <div class="food-icon">🧋</div>
-      <div><div class="food-card-name">Trà sữa</div><div class="food-card-price">18.000đ</div></div>
+      <div><div class="food-card-name">Trà sữa</div><div class="food-card-price">20.000đ/ly</div></div>
     </div>
   </div>
 </section>
@@ -652,68 +712,112 @@
       <p class="section-desc" style="max-width:300px">Khám phá giá trị dinh dưỡng và phương pháp chế biến khoa học cho từng món ăn tươi ngon.</p>
     </div>
     <div class="menu-grid">
+      <!-- 1. Sữa chua mix thạch -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c1">🌯<div class="menu-badge">Bán chạy</div></div>
+        <div class="menu-thumb c3">🍯<div class="menu-badge">Bán chạy</div></div>
         <div class="menu-body">
-          <div class="menu-name">Cơm cuộn</div>
-          <div class="menu-desc">Cơm Nhật cuộn rong biển, nhân trứng chiên, thanh cua và rau củ tươi. Chấm sốt mayonnaise tự làm.</div>
-          <div class="menu-nutrition">Dinh dưỡng: Protein 12g, Carbs 50g, Fat 8g, Calories 320kcal</div>
-          <div class="menu-method">Phương pháp: Cuốn sushi truyền thống (Hosomaki)</div>
-          <div class="menu-stem">
-            <span class="tag tag-s">S: Tinh bột</span>
-            <span class="tag tag-e">E: Kỹ thuật cuộn</span>
-            <span class="tag tag-m">M: Định lượng</span>
-          </div>
-          <div class="menu-footer">
-            <div class="menu-price">15.000đ</div>
-            <button class="add-btn" onclick="addToQueue('Cơm cuộn', 15000)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-item fade-in">
-        <div class="menu-thumb c2">🍗</div>
-        <div class="menu-body">
-          <div class="menu-name">Chân gà sả tắc</div>
-          <div class="menu-desc">Chân gà ngâm muối sả ớt tắc tươi, vị chua cay đặc trưng. Ướp 4 tiếng trước khi phục vụ.</div>
-          <div class="menu-nutrition">Dinh dưỡng: Protein 25g, Carbs 5g, Fat 12g, Calories 220kcal</div>
-          <div class="menu-method">Phương pháp: Ủ lạnh axit citric (Marinade)</div>
-          <div class="menu-stem">
-            <span class="tag tag-s">S: Collagen, axit citric</span>
-            <span class="tag tag-t">T: Quy trình ướp</span>
-            <span class="tag tag-m">M: Thời gian & nhiệt độ</span>
-          </div>
-          <div class="menu-footer">
-            <div class="menu-price">20.000đ</div>
-            <button class="add-btn" onclick="addToQueue('Chân gà sả tắc', 20000)">+</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-item fade-in">
-        <div class="menu-thumb c3">🥛<div class="menu-badge">Healthy</div></div>
-        <div class="menu-body">
-          <div class="menu-name">Sữa chua</div>
-          <div class="menu-desc">Sữa chua tự làm từ sữa tươi + men sống, ủ 8 tiếng ở 42°C. Mịn, mát và giàu probiotic tự nhiên.</div>
-          <div class="menu-nutrition">Dinh dưỡng: Protein 8g, Carbs 12g, Fat 3g, Probiotic cao</div>
-          <div class="menu-method">Phương pháp: Lên men lactic (Fermentation)</div>
+          <div class="menu-name">Sữa chua mix thạch</div>
+          <div class="menu-desc">Sữa chua tự làm kết hợp thạch nhiều màu sắc, vị chua ngọt hài hoà, giàu probiotic và collagen từ thạch.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 6g, Carbs 18g, Fat 2g, Probiotic cao</div>
+          <div class="menu-method">Phương pháp: Lên men lactic + tạo gel thạch</div>
           <div class="menu-stem">
             <span class="tag tag-s">S: Lên men lactic, pH</span>
             <span class="tag tag-t">T: Kiểm soát nhiệt độ</span>
             <span class="tag tag-m">M: Tỷ lệ pha chế</span>
           </div>
           <div class="menu-footer">
-            <div class="menu-price">12.000đ</div>
-            <button class="add-btn" onclick="addToQueue('Sữa chua', 12000)">+</button>
+            <div class="menu-price">10k/chai · 5k/hũ</div>
+            <button class="add-btn" onclick="addToQueue('Sữa chua mix thạch')">+</button>
           </div>
         </div>
       </div>
 
+      <!-- 2. Sữa chua trái cây -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c4">🍮</div>
+        <div class="menu-thumb c4">🍓<div class="menu-badge">Healthy</div></div>
+        <div class="menu-body">
+          <div class="menu-name">Sữa chua trái cây</div>
+          <div class="menu-desc">Sữa chua mịn kết hợp trái cây tươi (dâu, kiwi), giàu vitamin C và probiotic tự nhiên, không chất bảo quản.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 7g, Carbs 20g, Vitamin C cao</div>
+          <div class="menu-method">Phương pháp: Lên men lactic + mix trái cây tươi</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Vitamin C, enzyme</span>
+            <span class="tag tag-t">T: Bảo quản lạnh</span>
+            <span class="tag tag-m">M: Định lượng trái cây</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">15k/2 hũ</div>
+            <button class="add-btn" onclick="addToQueue('Sữa chua trái cây')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Trà atiso đỏ hạt chia -->
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c6">🫖</div>
+        <div class="menu-body">
+          <div class="menu-name">Trà atiso đỏ hạt chia</div>
+          <div class="menu-desc">Trà atiso đỏ (hibiscus) pha lạnh kết hợp hạt chia ngâm nở, vị chua thanh tự nhiên, giàu antioxidant.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Omega-3, Chất xơ 5g, Antioxidant cao, Calories ~80kcal</div>
+          <div class="menu-method">Phương pháp: Chiết xuất nước lạnh (Cold brew)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Anthocyanin, hạt chia nở</span>
+            <span class="tag tag-t">T: Ngâm chiết cold brew</span>
+            <span class="tag tag-m">M: Tỷ lệ pha loãng</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">20k/ly</div>
+            <button class="add-btn" onclick="addToQueue('Trà atiso đỏ hạt chia')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Cơm cuộn -->
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c1">🌯<div class="menu-badge">Signature</div></div>
+        <div class="menu-body">
+          <div class="menu-name">Cơm cuộn</div>
+          <div class="menu-desc">Cơm Nhật cuộn rong biển, nhân trứng chiên, thanh cua và rau củ tươi. Chấm sốt mayonnaise tự làm.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 12g, Carbs 50g, Fat 8g, Calories 320kcal</div>
+          <div class="menu-method">Phương pháp: Cuốn sushi truyền thống (Hosomaki)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Tinh bột gelatine hoá</span>
+            <span class="tag tag-e">E: Kỹ thuật cuộn</span>
+            <span class="tag tag-m">M: Định lượng nhân</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">25k/hộp</div>
+            <button class="add-btn" onclick="addToQueue('Cơm cuộn')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Chân gà sả tắc -->
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c2">🍗</div>
+        <div class="menu-body">
+          <div class="menu-name">Chân gà sả tắc</div>
+          <div class="menu-desc">Chân gà ngâm muối sả ớt tắc tươi, vị chua cay đặc trưng. Ướp lạnh 4 tiếng trước khi phục vụ.</div>
+          <div class="menu-nutrition">Dinh dưỡng: Protein 25g, Collagen cao, Fat 12g, Calories 220kcal</div>
+          <div class="menu-method">Phương pháp: Ủ lạnh axit citric (Marinade)</div>
+          <div class="menu-stem">
+            <span class="tag tag-s">S: Collagen, axit citric</span>
+            <span class="tag tag-t">T: Quy trình ướp lạnh</span>
+            <span class="tag tag-m">M: Thời gian & nhiệt độ</span>
+          </div>
+          <div class="menu-footer">
+            <div class="menu-price">15k/hộp</div>
+            <button class="add-btn" onclick="addToQueue('Chân gà sả tắc')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Flan -->
+      <div class="menu-item fade-in">
+        <div class="menu-thumb c5">🍮<div class="menu-badge">Handmade</div></div>
         <div class="menu-body">
           <div class="menu-name">Flan (Bánh caramel)</div>
-          <div class="menu-desc">Flan trứng hấp cách thủy với lớp caramel vàng óng. Texture mịn như nhung, vị ngọt dịu thanh.</div>
+          <div class="menu-desc">Flan trứng hấp cách thủy với lớp caramel vàng óng. Texture mịn như nhung, vị ngọt dịu thanh tự nhiên.</div>
           <div class="menu-nutrition">Dinh dưỡng: Protein 6g, Carbs 25g, Fat 8g, Calories 180kcal</div>
           <div class="menu-method">Phương pháp: Hấp cách thủy (Bain-marie)</div>
           <div class="menu-stem">
@@ -722,14 +826,15 @@
             <span class="tag tag-m">M: Tỷ lệ trứng:sữa</span>
           </div>
           <div class="menu-footer">
-            <div class="menu-price">10.000đ</div>
-            <button class="add-btn" onclick="addToQueue('Flan', 10000)">+</button>
+            <div class="menu-price">15k/2 hộp</div>
+            <button class="add-btn" onclick="addToQueue('Flan')">+</button>
           </div>
         </div>
       </div>
 
+      <!-- 7. Trà sữa -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c5">🧋<div class="menu-badge">Signature</div></div>
+        <div class="menu-thumb c7">🧋</div>
         <div class="menu-body">
           <div class="menu-name">Trà sữa</div>
           <div class="menu-desc">Trà sữa pha thủ công từ trà ô long, sữa tươi và đường đen. Có topping trân châu đen nấu mềm.</div>
@@ -741,8 +846,8 @@
             <span class="tag tag-m">M: Tính giá thành</span>
           </div>
           <div class="menu-footer">
-            <div class="menu-price">18.000đ</div>
-            <button class="add-btn" onclick="addToQueue('Trà sữa', 18000)">+</button>
+            <div class="menu-price">20k/ly</div>
+            <button class="add-btn" onclick="addToQueue('Trà sữa')">+</button>
           </div>
         </div>
       </div>
@@ -917,11 +1022,14 @@
         </div>
         <div class="add-dish-row">
           <select id="custDish">
-            <option value="0">🌯 Cơm cuộn – 15.000đ</option>
-            <option value="1">🍗 Chân gà sả tắc – 20.000đ</option>
-            <option value="2">🥛 Sữa chua – 12.000đ</option>
-            <option value="3">🍮 Flan – 10.000đ</option>
-            <option value="4">🧋 Trà sữa – 18.000đ</option>
+            <option value="0">🍯 Sữa chua mix thạch – 10k/chai</option>
+            <option value="1">🍯 Sữa chua mix thạch – 5k/hũ</option>
+            <option value="2">🍓 Sữa chua trái cây – 15k/2 hũ</option>
+            <option value="3">🫖 Trà atiso đỏ hạt chia – 20k/ly</option>
+            <option value="4">🌯 Cơm cuộn – 25k/hộp</option>
+            <option value="5">🍗 Chân gà sả tắc – 15k/hộp</option>
+            <option value="6">🍮 Flan – 15k/2 hộp</option>
+            <option value="7">🧋 Trà sữa – 20k/ly</option>
           </select>
           <div class="qty-stepper">
             <button onclick="changeCartQty(-1)">−</button>
@@ -1038,11 +1146,14 @@
 
   /* ── Cart state ─────────────────────────────────────────────────────── */
   const MENU_DATA = [
-    { label: '🌯 Cơm cuộn',       price: 15000 },
-    { label: '🍗 Chân gà sả tắc', price: 20000 },
-    { label: '🥛 Sữa chua',       price: 12000 },
-    { label: '🍮 Flan',           price: 10000 },
-    { label: '🧋 Trà sữa',        price: 18000 },
+    { label: '🍯 Sữa chua mix thạch (chai)', price: 10000 },
+    { label: '🍯 Sữa chua mix thạch (hũ)',   price: 5000  },
+    { label: '🍓 Sữa chua trái cây',          price: 15000 },
+    { label: '🫖 Trà atiso đỏ hạt chia',      price: 20000 },
+    { label: '🌯 Cơm cuộn',                   price: 25000 },
+    { label: '🍗 Chân gà sả tắc',             price: 15000 },
+    { label: '🍮 Flan',                        price: 15000 },
+    { label: '🧋 Trà sữa',                    price: 20000 },
   ];
   let cart = [];      // [{ label, price, qty }]
   let _cartQty = 1;
@@ -1102,7 +1213,6 @@
 
   /* ── Render queue state (called on every SSE "state" event) ─────────── */
   function parseDish(raw) {
-    // Format: "🌯 Cơm cuộn ×2, 🥛 Sữa chua ×1|||42000"  OR legacy plain string
     const sep = (raw || '').indexOf('|||');
     if (sep === -1) return { items: raw || '', total: null };
     return { items: raw.slice(0, sep), total: parseInt(raw.slice(sep + 3)) || null };
@@ -1127,22 +1237,42 @@
       list.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem">Chưa có đơn nào trong danh sách.</p>';
       return;
     }
-    list.innerHTML = queue.map(q => {
+
+    const rows = queue.map(q => {
       let sc = 'status-wait', sl = 'Đang chờ';
-      if (q.num === serving) { sc = 'status-ready'; sl = 'Đang phục vụ'; }
-      if (q.num < serving)   { sc = 'status-done';  sl = 'Hoàn tất'; }
+      if (q.num === serving) { sc = 'status-ready'; sl = '⚡ Đang phục vụ'; }
+      if (q.num < serving)   { sc = 'status-done';  sl = '✓ Hoàn tất'; }
       const { items, total } = parseDish(q.dish);
-      const totalBadge = total
-        ? `<span class="queue-item-total">💰 ${total.toLocaleString('vi-VN')}đ</span>`
-        : '';
-      return `<div class="queue-item">
-        <span class="qnum">#${String(q.num).padStart(3,'0')}</span>
-        <span class="qname">${q.name}</span>
-        <span class="qstatus ${sc}">${sl}</span>
-        <div class="queue-item-row2">${items}</div>
-        ${total ? `<div class="queue-item-row2" style="padding-top:0.15rem">${totalBadge}</div>` : ''}
-      </div>`;
+      const totalCell = total
+        ? `${total.toLocaleString('vi-VN')}đ`
+        : '–';
+      return `<tr>
+        <td class="qt-num">#${String(q.num).padStart(3,'0')}</td>
+        <td><span class="qt-name" title="${q.name}">${q.name}</span></td>
+        <td class="qt-status"><span class="${sc}">${sl}</span></td>
+        <td class="qt-dish">
+          <span class="dish-wrap">
+            <span class="dish-text">${items}</span>
+            <span class="dish-tooltip">${items.replace(/,\s*/g, '<br>')}</span>
+          </span>
+        </td>
+        <td class="qt-total">${totalCell}</td>
+      </tr>`;
     }).join('');
+
+    list.innerHTML = `
+      <table class="queue-table">
+        <thead>
+          <tr>
+            <th>Số</th>
+            <th>Tên</th>
+            <th>Trạng thái</th>
+            <th>Danh sách món</th>
+            <th style="text-align:right">Tổng tiền</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
   }
 
   /* ── SSE connection ──────────────────────────────────────────────────── */
