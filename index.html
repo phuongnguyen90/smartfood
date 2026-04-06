@@ -219,10 +219,8 @@
     overflow:hidden; transition:transform 0.25s, box-shadow 0.25s;
   }
   .menu-item:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(61,31,10,0.12); }
-  .menu-thumb {
-    height:180px; display:flex; align-items:center; justify-content:center;
-    font-size:5rem; position:relative;
-  }
+  .menu-thumb { height:180px; display:flex; align-items:center; justify-content:center; font-size:5rem; position:relative; }
+  .menu-thumb-img { width:90px; height:90px; object-fit:contain; }
   .menu-thumb.c1 { background:linear-gradient(135deg,#FFF8E1,#FFE0B2); }
   .menu-thumb.c2 { background:linear-gradient(135deg,#FFF3E0,#FFCCBC); }
   .menu-thumb.c3 { background:linear-gradient(135deg,#E8F5E9,#F1F8E9); }
@@ -716,7 +714,7 @@
 
       <!-- 2. Sữa chua trái cây -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c4">🍨<div class="menu-badge">Healthy</div></div>
+        <div class="menu-thumb c4"><img src="./icon/yogurt.png" class="menu-thumb-img"><div class="menu-badge">Healthy</div></div>
         <div class="menu-body">
           <div class="menu-name">Sữa chua trái cây</div>
           <div class="menu-desc">Sữa chua mịn kết hợp trái cây tươi (dâu, kiwi), giàu vitamin C và probiotic tự nhiên, không chất bảo quản.</div>
@@ -736,7 +734,7 @@
 
       <!-- 3. Trà atiso đỏ hạt chia -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c6">🍹</div>
+        <div class="menu-thumb c6"><img src="./icon/smoothie.png" class="menu-thumb-img"></div>
         <div class="menu-body">
           <div class="menu-name">Trà atiso đỏ hạt chia</div>
           <div class="menu-desc">Trà atiso đỏ (hibiscus) pha lạnh kết hợp hạt chia ngâm nở, vị chua thanh tự nhiên, giàu antioxidant.</div>
@@ -816,7 +814,7 @@
 
       <!-- 7. Trà sữa -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c7">🥤</div>
+        <div class="menu-thumb c7"><img src="./icon/bubble-tea.png" class="menu-thumb-img"></div>
         <div class="menu-body">
           <div class="menu-name">Trà sữa</div>
           <div class="menu-desc">Trà sữa pha thủ công từ trà ô long, sữa tươi và đường đen. Có topping trân châu đen nấu mềm.</div>
