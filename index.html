@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartFood – Ẩm Thực Thông Minh STEM</title>
+<title>Trạm Năng Lượng 6A2 – Ẩm Thực STEM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -326,8 +326,7 @@
     .queue-form { padding:1.25rem; }
     .add-dish-row { flex-wrap:wrap; }
     .add-dish-row select { width:100%; }
-    .queue-table thead th:nth-child(3),
-    .queue-table tbody td:nth-child(3) { display:none; }
+
   }
   .queue-form {
     background:#fff; border-radius:24px;
@@ -375,6 +374,8 @@
     background:#fff; border-radius:24px; border:1px solid var(--border);
     padding:1.5rem; max-height:380px; overflow-y:auto;
   }
+  .queue-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .queue-table { min-width:480px; }
   .queue-list h4 { font-weight:700; color:var(--brown); margin-bottom:1rem; }
 
   /* TABLE */
@@ -626,7 +627,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Smart<span>Food</span></div>
+  <div class="nav-logo">Trạm <span>Năng Lượng 6A2</span></div>
   <ul class="nav-links">
     <li><a href="#home">Trang chủ</a></li>
     <li><a href="#about">Giới thiệu</a></li>
@@ -644,7 +645,7 @@
   <div class="hero-dots"></div>
   <div class="hero-content fade-in">
     <div class="hero-tag">Dự án STEM – Ẩm thực thông minh</div>
-    <h1>Smart<em>Food</em><br>Ẩm Thực<br>Công Nghệ</h1>
+    <h1>Trạm <em>Năng Lượng</em><br>6A2<br>Ẩm Thực STEM</h1>
     <p class="hero-desc">Gian hàng ẩm thực kết hợp Khoa học – Công nghệ – Kỹ thuật – Toán học. Đặt hàng online, lấy số thứ tự thông minh, trải nghiệm ăn uống hiện đại.</p>
     <div class="hero-actions">
       <a href="#menu" class="btn-primary">�️ Xem Menu</a>
@@ -671,7 +672,7 @@
 <section id="about">
   <div class="container">
     <div class="fade-in">
-      <div class="section-label">Dự án SmartFood</div>
+      <div class="section-label">Dự án STEM – Lớp 6A2</div>
       <h2 class="section-title">Ẩm Thực Thông Minh<br>Kết Hợp STEM</h2>
       <p class="section-desc">Gian hàng ẩm thực sáng tạo, nơi khoa học gặp công nghệ. Khám phá dinh dưỡng, phương pháp chế biến khoa học và trải nghiệm đặt hàng thông minh.</p>
     </div>
@@ -1130,7 +1131,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">SmartFood</div>
+  <div class="logo">Trạm Năng Lượng 6A2</div>
   <p>Dự án STEM – Gian hàng ẩm thực thông minh</p>
 </footer>
 
@@ -1292,6 +1293,7 @@
     }).join('');
 
     list.innerHTML = `
+      <div class="queue-table-wrap">
       <table class="queue-table">
         <thead>
           <tr>
@@ -1303,7 +1305,8 @@
           </tr>
         </thead>
         <tbody>${rows}</tbody>
-      </table>`;
+      </table>
+      </div>`;
   }
 
   /* ── SSE connection ──────────────────────────────────────────────────── */
@@ -1318,14 +1321,25 @@
       const state = JSON.parse(e.data);
       renderQueue(state);
       setStatus('live');
-      // Bug fix: server toast fires with serving num (stale).
-      // If WE just registered, compute the real new num from the queue.
+
+      // Fix: registration toast — use max(queue.nums) = newly assigned number
       if (_pendingRegister) {
         _pendingRegister = false;
-        _suppressNextToast = true; // suppress the server's stale toast
+        _suppressNextToast = true;
         const nums = state.queue.map(q => q.num);
         const newNum = nums.length ? Math.max(...nums) : 1;
         showToast(`#${String(newNum).padStart(3,'0')}`, 'Đặt hàng thành công! Vui lòng chờ gọi số.');
+      }
+
+      // Fix: next-queue toast — use state.serving (the correct current serving number)
+      if (_pendingNext) {
+        _pendingNext = false;
+        _suppressNextToast = true;
+        if (state.serving > 0) {
+          const sItem = state.queue.find(q => q.num === state.serving);
+          const nameStr = sItem ? ` – ${sItem.name}` : '';
+          showToast(`#${String(state.serving).padStart(3,'0')}`, `Đang phục vụ${nameStr}`);
+        }
       }
     });
 
@@ -1350,7 +1364,8 @@
   connectSSE();
 
   /* ── POST helper (fire-and-forget; SSE does the UI update) ──────────── */
-  let _pendingRegister = false; // flag to detect our own registration
+  let _pendingRegister = false;
+  let _pendingNext = false;
 
   async function queueAction(body) {
     await fetch('/api/queue', {
@@ -1376,6 +1391,7 @@
   }
 
   function nextQueue() {
+    _pendingNext = true;
     queueAction({ action: 'next' });
   }
 
