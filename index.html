@@ -318,6 +318,7 @@
     background:#fff; border-radius:24px;
     border:1px solid var(--border);
     padding:2rem;
+    min-width:0; overflow:hidden;
   }
   .queue-form h3 {
     font-family:'Playfair Display',serif;
@@ -445,7 +446,10 @@
     display:flex; gap:0.5rem; align-items:center;
     margin-bottom:1.25rem; flex-wrap:wrap;
   }
-  .add-dish-row select { flex:1; min-width:0; }
+  .add-dish-row select {
+    flex:1 1 0; min-width:0; width:0;
+    overflow:hidden; text-overflow:ellipsis;
+  }
   .qty-stepper {
     display:flex; align-items:center; gap:0.25rem;
     background:#f5f0eb; border-radius:50px;
@@ -453,7 +457,7 @@
     border:1.5px solid var(--border); flex-shrink:0;
   }
   .qty-stepper button {
-    width:26px; height:26px; border:none; background:transparent;
+    width:28px; height:28px; border:none; background:transparent;
     font-size:1.1rem; font-weight:700; cursor:pointer; color:var(--orange);
     border-radius:50%; transition:background 0.15s;
     display:flex; align-items:center; justify-content:center; line-height:1;
@@ -470,6 +474,12 @@
     cursor:pointer; white-space:nowrap; transition:background 0.2s; flex-shrink:0;
   }
   .add-dish-btn:hover { background:var(--orange-dark); }
+  /* Mobile: select full width, stepper + button cùng hàng dưới */
+  @media(max-width:540px){
+    .add-dish-row select    { flex:1 1 100%; width:100%; }
+    .qty-stepper            { flex:0 0 auto; }
+    .add-dish-btn           { flex:1; justify-content:center; }
+  }
   .cart-box {
     background:#FFF8F0; border:1.5px solid rgba(232,99,10,0.2);
     border-radius:48px; padding:1rem 1.25rem;
@@ -482,10 +492,14 @@
   .cart-item {
     display:flex; justify-content:space-between; align-items:center;
     padding:0.45rem 0; border-bottom:1px dashed rgba(232,99,10,0.15);
-    font-size:0.875rem; gap:0.5rem;
+    font-size:0.875rem; gap:0.5rem; min-width:0;
   }
   .cart-item:last-of-type { border-bottom:none; }
-  .cart-item-name { color:var(--brown); font-weight:600; flex:1; }
+  .cart-item-name {
+    color:var(--brown); font-weight:600; flex:1;
+    min-width:0; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap;
+  }
   .cart-item-detail { color:var(--orange); font-weight:600; white-space:nowrap; }
   .cart-item-remove {
     background:none; border:none; cursor:pointer;
