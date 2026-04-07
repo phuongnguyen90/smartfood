@@ -846,47 +846,76 @@
       <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học từ sách giáo khoa Công nghệ và Kỹ thuật thực phẩm.</p>
     </div>
     <div class="process-tabs">
-      <button class="ptab active" onclick="showProcess('com')">🍱 Cơm cuộn</button>
-      <button class="ptab" onclick="showProcess('ga')">🍗 Chân gà</button>
-      <button class="ptab" onclick="showProcess('sua')">🥤 Sữa chua</button>
-      <button class="ptab" onclick="showProcess('flan')">🍮 Flan</button>
-      <button class="ptab" onclick="showProcess('tra')">🥤 Trà sữa</button>
+      <button class="ptab active" onclick="showProcess('scmt')">🥛  Sữa chua mix thạch</button>
+      <button class="ptab" onclick="showProcess('sctc')">🍨  Sữa chua trái cây</button>
+      <button class="ptab" onclick="showProcess('atiso')">🍹  Trà atiso hạt chia</button>
+      <button class="ptab" onclick="showProcess('com')">🍱  Cơm cuộn</button>
+      <button class="ptab" onclick="showProcess('ga')">🍗  Chân gà sả tắc</button>
+      <button class="ptab" onclick="showProcess('flan')">🍮  Flan</button>
+      <button class="ptab" onclick="showProcess('trasua')">🥤 Trà sữa</button>
     </div>
 
-    <div id="proc-com" class="process-steps active fade-in">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Chuẩn bị</div><div class="step-text">Vo gạo, nấu cơm Nhật, để nguội</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Sơ chế</div><div class="step-text">Cắt nhân, chiên trứng, luộc thanh cua</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Cuộn</div><div class="step-text">Trải nori, dàn đều cơm, xếp nhân, cuộn chặt</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Cắt lát</div><div class="step-text">Cắt 6–8 miếng bằng dao ướt</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Bày đĩa, kèm sốt mayo, giao khách</div></div>
+    <!-- 1. Sữa chua mix thạch -->
+    <div id="proc-scmt" class="process-steps active fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Đun & để nguội</div><div class="step-text">Đun sôi 1 lít nước, dùng nhiệt kế đo và để nguội đến khoảng 50°C</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Pha hỗn hợp</div><div class="step-text">Đổ sữa đặc vào cốc, thêm nước ấm cho đủ 1 lít, khuấy tan. Thêm hộp sữa chua vào, trộn đều</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 10–12 tiếng</div><div class="step-text">Rót hỗn hợp vào các lọ/chai/hũ, đặt vào thùng xốp, đậy nắp giữ ấm 10–12 tiếng</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Làm lạnh</div><div class="step-text">Chuyển lọ vào tủ lạnh 4°C để sữa chua đặc mịn lại</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Thêm thạch & giao</div><div class="step-text">Cho thạch nhiều màu lên trên, đậy nắp chai/hũ, giao khách</div></div>
     </div>
-    <div id="proc-ga" class="process-steps">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Sơ chế</div><div class="step-text">Rửa chân gà, cắt móng, chần sơ với gừng</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Pha nước ngâm</div><div class="step-text">Trộn tắc, sả, ớt, muối, đường theo tỷ lệ</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ngâm 4h</div><div class="step-text">Ngâm lạnh ở 4°C, ít nhất 4 giờ</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Kiểm tra</div><div class="step-text">Kiểm tra vị, thêm gia vị nếu cần</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">Đóng gói</div><div class="step-text">Cho vào hộp, dán nhãn, giao khách</div></div>
+
+    <!-- 2. Sữa chua trái cây -->
+    <div id="proc-sctc" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Đun sữa</div><div class="step-text">Trộn 4 lít sữa tươi + 4 lon sữa đặc, đun 90°C, khuấy đều, để nguội còn 42°C</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Cho men</div><div class="step-text">Thêm 4 hộp sữa chua cái Vinamilk, khuấy nhẹ cho tan đều vào hỗn hợp sữa</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 8 tiếng</div><div class="step-text">Ủ trong thùng giữ nhiệt 42°C – sau 8 tiếng được ~50 hũ sữa chua mịn</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Sên trái cây</div><div class="step-text">Sên 500g xoài/dâu/đào/việt quất với đường đến sệt, để nguội hoàn toàn</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Đóng hũ</div><div class="step-text">Múc sữa chua vào hũ nhựa, thêm trái cây sên lên trên, bảo quản lạnh</div></div>
     </div>
-    <div id="proc-sua" class="process-steps">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Đun sữa</div><div class="step-text">Đun sữa tươi đến 90°C, để nguội 42°C</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Cho men</div><div class="step-text">Trộn đều men sữa chua vào sữa đã nguội</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 8 tiếng</div><div class="step-text">Giữ 42°C trong 8h – vi khuẩn lên men</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Làm lạnh</div><div class="step-text">Chuyển tủ lạnh 4°C để đông kết gel</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Múc ra ly, thêm topping tuỳ chọn</div></div>
+
+    <!-- 3. Trà atiso đỏ hạt chia -->
+    <div id="proc-atiso" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Nấu nước cốt</div><div class="step-text">Nấu 25g hoa atiso đỏ + 190g đường + 1200ml nước trên lửa nhỏ trong 20 phút</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Lọc & nguội</div><div class="step-text">Lọc bỏ xác hoa, giữ nước cốt đỏ đẹp, để nguội hoàn toàn trước khi pha</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Pha ly</div><div class="step-text">Cho 120ml nước cốt + nước cốt ½ quả chanh + 1 muỗng hạt chia vào ly 500ml</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Thêm đá & lắc</div><div class="step-text">Thêm đá viên, lắc đều hoặc khuấy cho hạt chia phân bố đều trong ly</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Trang trí</div><div class="step-text">Decor 1 lát chanh + vài bông hoa atiso lên miệng ly, cắm ống hút giao khách</div></div>
     </div>
-    <div id="proc-flan" class="process-steps">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Nấu caramel</div><div class="step-text">Đun đường đến 180°C tạo màu vàng nâu</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Hỗn hợp trứng</div><div class="step-text">Đánh 3 trứng + 250ml sữa + đường + vani</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Lọc & đổ khuôn</div><div class="step-text">Lọc qua rây mịn để loại bọt khí</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Hấp cách thủy</div><div class="step-text">Hấp 160°C trong 35 phút, đậy giấy bạc</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">Lạnh & úp</div><div class="step-text">Để nguội, lạnh 2h, úp ra đĩa</div></div>
+
+    <!-- 4. Cơm cuộn rong biển -->
+    <div id="proc-com" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Nấu cơm</div><div class="step-text">Vo gạo Nhật, nấu chín dẻo, trải ra mâm cho nguội hoàn toàn</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Sơ chế nhân</div><div class="step-text">Chiên trứng mỏng, thái cà rốt sợi nhỏ, chuẩn bị kim chi và rong biển</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Cuộn</div><div class="step-text">Trải rong biển lên mành tre, dàn đều cơm, xếp nhân dọc giữa, cuộn chặt tay</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Cắt lát</div><div class="step-text">Dùng dao ướt cắt thành 6–8 miếng đều nhau</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Đóng hộp</div><div class="step-text">Xếp vào hộp 20 miếng/hộp, đậy nắp, dán nhãn giao khách</div></div>
     </div>
-    <div id="proc-tra" class="process-steps">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Pha trà</div><div class="step-text">Hãm trà ô long 90°C trong 3 phút</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Nấu trân châu</div><div class="step-text">Nấu trân châu 20 phút, ngâm đường đen</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Pha chế</div><div class="step-text">Lắc đều trà + sữa tươi + đường + đá viên</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Topping</div><div class="step-text">Thêm trân châu, kem cheese (tuỳ chọn)</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Đóng nắp, cắm ống hút, giao khách</div></div>
+
+    <!-- 5. Chân gà sả tắc -->
+    <div id="proc-ga" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Sơ chế</div><div class="step-text">Rửa sạch 500g–1kg chân gà, cắt móng, chần sơ với gừng đập dập để khử mùi</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Pha sốt Thái</div><div class="step-text">Vắt 5–7 quả tắc, trộn với nước mắm, đường, muối, tỏi + hành tím băm, ớt, tương ớt</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ngâm 4h+</div><div class="step-text">Cho chân gà vào sốt, thêm sả + lá chanh, ngâm lạnh ít nhất 4 tiếng cho thấm đều</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Kiểm tra vị</div><div class="step-text">Nếm thử, điều chỉnh chua – cay – ngọt – mặn cho cân bằng</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Đóng hộp</div><div class="step-text">Cho vào hộp, rưới ít sốt lên trên, đậy nắp, giao khách kèm xoài</div></div>
+    </div>
+
+    <!-- 6. Flan caramel -->
+    <div id="proc-flan" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Thắng caramel</div><div class="step-text">Đun 50g đường + 2–3 muỗng nước trên lửa vừa đến 180°C – màu vàng nâu đẹp</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Đánh hỗn hợp</div><div class="step-text">Đánh nhẹ 4–6 trứng + 400–500ml sữa tươi + sữa đặc + đường + 1 ống vani</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Lọc & đổ khuôn</div><div class="step-text">Lọc qua rây mịn để loại bọt khí, đổ lên lớp caramel trong khuôn</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Hấp cách thủy</div><div class="step-text">Hấp ở lửa nhỏ ~160°C trong 35 phút, đậy giấy bạc tránh đọng nước</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Làm lạnh & úp</div><div class="step-text">Để nguội, cho vào tủ lạnh 2 tiếng, úp ngược ra hộp/đĩa, giao khách</div></div>
+    </div>
+
+    <!-- 7. Trà sữa trân châu -->
+    <div id="proc-trasua" class="process-steps fade-in">
+      <div class="step"><div class="step-num">1</div><div class="step-label">Pha trà</div><div class="step-text">Hãm trà ô long với nước 90°C trong 3–5 phút, lọc bỏ bã trà, để nguội</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">Nấu trân châu</div><div class="step-text">Nấu trân châu đen trong nước sôi 20 phút đến mềm, vớt ra ngâm nước đường đen</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Lắc pha chế</div><div class="step-text">Cho trà + sữa tươi + đường vào bình, thêm đá viên, lắc đều đến khi hoà quyện</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">Cho trân châu</div><div class="step-text">Múc trân châu vào đáy ly trước, rót hỗn hợp trà sữa lên trên</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">Phục vụ</div><div class="step-text">Đậy nắp, cắm ống hút to (cỡ trân châu lọt), giao khách thưởng thức</div></div>
     </div>
   </div>
 </section>
