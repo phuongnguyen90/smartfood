@@ -359,79 +359,63 @@
   .current-num .sub { font-size:0.85rem; opacity:0.8; margin-top:0.5rem; }
   .queue-list {
     background:#fff; border-radius:24px; border:1px solid var(--border);
-    padding:1.5rem; max-height:420px;
+    padding:1.5rem; max-height:460px;
     overflow-y:auto; overflow-x:hidden;
   }
   .queue-list h4 { font-weight:700; color:var(--brown); margin-bottom:1rem; }
 
-  /* Scrollable table wrapper — chỉ scroll ngang bên trong */
-  .queue-table-wrap {
-    overflow-x:auto;
-    overflow-y:visible;
-    -webkit-overflow-scrolling:touch;
-    /* gutter nhỏ để shadow border-radius không bị clip */
-    margin:0 -0.25rem;
-    padding:0 0.25rem 0.5rem;
-  }
-
-  /* TABLE */
+  /* ── BẢNG (desktop) ── */
+  .queue-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
   .queue-table {
     width:100%; border-collapse:collapse; font-size:0.825rem;
-    min-width:520px; /* đảm bảo tất cả cột đủ chỗ trước khi scroll */
-    table-layout:fixed;
+    min-width:520px; table-layout:fixed;
   }
   .queue-table thead tr { border-bottom:2px solid var(--border); }
   .queue-table thead th {
     padding:0.45rem 0.6rem; text-align:left;
     font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
     text-transform:uppercase; color:var(--text-muted);
-    white-space:nowrap; overflow:hidden;
+    white-space:nowrap;
   }
-  .queue-table tbody tr {
-    border-bottom:1px solid var(--border); transition:background 0.15s;
-  }
+  .queue-table tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; }
   .queue-table tbody tr:last-child { border-bottom:none; }
   .queue-table tbody tr:hover { background:#FFFBF5; }
-  .queue-table td {
-    padding:0.55rem 0.6rem; vertical-align:top;
-    overflow:hidden;
-  }
-
-  /* Định width % cho từng cột — tổng 100% */
-  .queue-table colgroup .col-num    { width:12%; }
-  .queue-table colgroup .col-name   { width:16%; }
+  .queue-table td { padding:0.55rem 0.6rem; vertical-align:top; overflow:hidden; }
+  .queue-table colgroup .col-num    { width:11%; }
+  .queue-table colgroup .col-name   { width:15%; }
   .queue-table colgroup .col-status { width:20%; }
-  .queue-table colgroup .col-dish   { width:36%; }
+  .queue-table colgroup .col-dish   { width:38%; }
   .queue-table colgroup .col-total  { width:16%; }
-
-  /* Col: số bàn */
-  .qt-num { font-weight:800; color:var(--orange); font-size:0.9rem; white-space:nowrap; }
-  /* Col: tên */
-  .qt-name {
-    font-weight:600; color:var(--brown);
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  /* Col: trạng thái */
+  .qt-num   { font-weight:800; color:var(--orange); font-size:0.9rem; white-space:nowrap; }
+  .qt-name  { font-weight:600; color:var(--brown); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .qt-status { white-space:nowrap; }
-  .qt-status span {
-    font-size:0.72rem; font-weight:600; padding:3px 9px;
-    border-radius:50px; white-space:nowrap; display:inline-block;
-  }
+  .qt-status span { font-size:0.72rem; font-weight:600; padding:3px 9px; border-radius:50px; white-space:nowrap; display:inline-block; }
   .status-wait  { background:#FFF3E0; color:#E65100; }
   .status-ready { background:#E8F5E9; color:#2E7D32; }
   .status-done  { background:#F3E5F5; color:#6A1B9A; }
-  /* Col: món – xuống dòng từng món */
-  .qt-dish { }
   .dish-wrap { display:block; }
-  .dish-text {
-    display:block; color:var(--text-muted);
-    font-size:0.78rem; line-height:1.7;
-    white-space:normal; word-break:break-word;
+  .dish-text { display:block; color:var(--text-muted); font-size:0.78rem; line-height:1.7; white-space:normal; word-break:break-word; }
+  .qt-total { font-weight:700; color:var(--green); white-space:nowrap; text-align:right; font-size:0.85rem; }
+
+  /* ── CARD (mobile ≤600px) ── */
+  .queue-cards { display:none; flex-direction:column; gap:0.6rem; }
+  .qcard {
+    border:1px solid var(--border); border-radius:12px;
+    padding:0.75rem 0.9rem;
   }
-  /* Col: tổng tiền */
-  .qt-total {
-    font-weight:700; color:var(--green);
-    white-space:nowrap; text-align:right; font-size:0.85rem;
+  .qcard-top {
+    display:flex; align-items:center; gap:0.5rem;
+    margin-bottom:0.35rem;
+  }
+  .qcard-num  { font-weight:800; color:var(--orange); font-size:0.95rem; flex-shrink:0; }
+  .qcard-name { font-weight:600; color:var(--brown); font-size:0.88rem; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qcard-dish { font-size:0.78rem; color:var(--text-muted); line-height:1.65; margin-bottom:0.4rem; }
+  .qcard-foot { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+  .qcard-total { font-weight:700; color:var(--green); font-size:0.85rem; }
+
+  @media(max-width:600px){
+    .queue-table-wrap { display:none; }
+    .queue-cards      { display:flex; }
   }
 
   /* QUEUE ITEM TOTAL (legacy - keep for safety) */
@@ -1288,46 +1272,57 @@
       return;
     }
 
-    const rows = queue.map(q => {
+    const rows  = [];
+    const cards = [];
+
+    queue.forEach(q => {
       let sc = 'status-wait', sl = 'Đang chờ';
       if (q.num === serving) { sc = 'status-ready'; sl = '⚡ Đang phục vụ'; }
       if (q.num < serving)   { sc = 'status-done';  sl = '✓ Hoàn tất'; }
       const { items, total } = parseDish(q.dish);
-      const totalCell = total
-        ? `${total.toLocaleString('vi-VN')}đ`
-        : '–';
-      return `<tr>
-        <td class="qt-num">#${String(q.num).padStart(3,'0')}</td>
+      const totalStr = total ? `${total.toLocaleString('vi-VN')}đ` : '–';
+      const numStr   = `#${String(q.num).padStart(3,'0')}`;
+      const dishHtml = items.split(', ').join('<br>');
+
+      // Table row
+      rows.push(`<tr>
+        <td class="qt-num">${numStr}</td>
         <td><span class="qt-name" title="${q.name}">${q.name}</span></td>
         <td class="qt-status"><span class="${sc}">${sl}</span></td>
-        <td class="qt-dish">
-          <span class="dish-wrap">
-            <span class="dish-text">${items.split(', ').join('<br>')}</span>
-          </span>
-        </td>
-        <td class="qt-total">${totalCell}</td>
-      </tr>`;
-    }).join('');
+        <td class="qt-dish"><span class="dish-wrap"><span class="dish-text">${dishHtml}</span></span></td>
+        <td class="qt-total">${totalStr}</td>
+      </tr>`);
+
+      // Mobile card
+      cards.push(`<div class="qcard">
+        <div class="qcard-top">
+          <span class="qcard-num">${numStr}</span>
+          <span class="qcard-name">${q.name}</span>
+          <span class="qt-status"><span class="${sc}">${sl}</span></span>
+        </div>
+        <div class="qcard-dish">${dishHtml}</div>
+        <div class="qcard-foot">
+          <span style="font-size:0.75rem;color:var(--text-muted)">Tổng tiền</span>
+          <span class="qcard-total">${totalStr}</span>
+        </div>
+      </div>`);
+    });
 
     list.innerHTML = `
       <div class="queue-table-wrap">
-      <table class="queue-table">
-        <colgroup>
-          <col class="col-num"><col class="col-name">
-          <col class="col-status"><col class="col-dish"><col class="col-total">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Số</th>
-            <th>Tên</th>
-            <th>Trạng thái</th>
-            <th>Danh sách món</th>
-            <th style="text-align:right">Tổng tiền</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-      </div>`;
+        <table class="queue-table">
+          <colgroup>
+            <col class="col-num"><col class="col-name">
+            <col class="col-status"><col class="col-dish"><col class="col-total">
+          </colgroup>
+          <thead><tr>
+            <th>Số</th><th>Tên</th><th>Trạng thái</th>
+            <th>Danh sách món</th><th style="text-align:right">Tổng tiền</th>
+          </tr></thead>
+          <tbody>${rows.join('')}</tbody>
+        </table>
+      </div>
+      <div class="queue-cards">${cards.join('')}</div>`;
   }
 
   /* ── SSE connection ──────────────────────────────────────────────────── */
