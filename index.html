@@ -654,7 +654,7 @@
   </div>
   <div class="hero-float">
     <div class="food-card">
-      <div class="food-icon"><img src="./icon/smoothie.png" class="menu-thumb-img"></div>
+      <div class="food-icon"><img src="./icon/smoothie.png" class="menu-thumb-img" width="16"></div>
       <div><div class="food-card-name">Sữa chua mix thạch</div><div class="food-card-price">10k/chai · 5k/hũ</div></div>
     </div>
     <div class="food-card">
@@ -775,7 +775,7 @@
 
       <!-- 4. Cơm cuộn rong biển -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c1">🌯<div class="menu-badge">Signature</div></div>
+        <div class="menu-thumb c1">🍱<div class="menu-badge">Signature</div></div>
         <div class="menu-body">
           <div class="menu-name">Cơm cuộn rong biển</div>
           <div class="menu-desc">Cơm cuộn nhân trứng, cà rốt, kim chi tươi – bọc rong biển giòn.</div>
@@ -795,7 +795,7 @@
 
       <!-- 5. Chân gà sả tắc -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c2">🍗</div>
+        <div class="menu-thumb c2"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/></div>
         <div class="menu-body">
           <div class="menu-name">Chân gà sả tắc</div>
           <div class="menu-desc">Chân gà ngâm sốt Thái: tắc, sả, ớt, tỏi, hành tím – chua cay đặc trưng, ướp lạnh 4+ tiếng.</div>
@@ -866,13 +866,13 @@
       <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học từ sách giáo khoa Công nghệ và Kỹ thuật thực phẩm.</p>
     </div>
     <div class="process-tabs">
-      <button class="ptab active" onclick="showProcess('scmt')">🍯 Sữa chua mix thạch</button>
-      <button class="ptab" onclick="showProcess('sctc')">🍓 Sữa chua trái cây</button>
-      <button class="ptab" onclick="showProcess('atiso')">🫖 Trà atiso hạt chia</button>
-      <button class="ptab" onclick="showProcess('com')">🌯 Cơm cuộn</button>
-      <button class="ptab" onclick="showProcess('ga')">🍗 Chân gà sả tắc</button>
-      <button class="ptab" onclick="showProcess('flan')">🍮 Flan</button>
-      <button class="ptab" onclick="showProcess('trasua')">🧋 Trà sữa</button>
+      <button class="ptab active" onclick="showProcess('scmt')">🥛Sữa chua mix thạch</button>
+      <button class="ptab" onclick="showProcess('sctc')">🍨Sữa chua trái cây</button>
+      <button class="ptab" onclick="showProcess('atiso')">🍹Trà atiso hạt chia</button>
+      <button class="ptab" onclick="showProcess('com')">🍱Cơm cuộn</button>
+      <button class="ptab" onclick="showProcess('ga')"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/>Chân gà sả tắc</button>
+      <button class="ptab" onclick="showProcess('flan')">🍮Flan</button>
+      <button class="ptab" onclick="showProcess('trasua')">🥤Trà sữa</button>
     </div>
 
     <!-- 1. Sữa chua mix thạch -->
@@ -956,7 +956,7 @@
         <div style="font-size:0.9rem; color:var(--green); font-weight:600;">Protein: 6-8g | Fat: 3-8g | Carbs: 12-25g</div>
       </div>
       <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
-        <div style="font-size:2rem; margin-bottom:1rem;">🍗</div>
+        <div style="font-size:2rem; margin-bottom:1rem;"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/></div>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Món Ăn Nhanh Năng Lượng</h3>
         <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Chân gà, cơm cuộn cung cấp protein và tinh bột, lý tưởng cho người vận động nhiều hoặc cần năng lượng.</p>
         <div style="font-size:0.9rem; color:var(--orange); font-weight:600;">Protein: 12-25g | Fat: 8-12g | Carbs: 5-50g</div>
@@ -1062,7 +1062,7 @@
             <option value="2">🍨 Sữa chua trái cây – 15k/2 hũ</option>
             <option value="3">🍹 Trà atiso đỏ hạt chia – 20k/ly</option>
             <option value="4">🍱 Cơm cuộn – 25k/hộp</option>
-            <option value="5">🍗 Chân gà sả tắc – 15k/hộp</option>
+            <option value="5"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/> Chân gà sả tắc – 15k/hộp</option>
             <option value="6">🍮 Flan – 15k/2 hộp</option>
             <option value="7">🥤 Trà sữa – 20k/ly</option>
           </select>
@@ -1184,7 +1184,7 @@
     { label: '🍨 Sữa chua trái cây',          price: 15000 },
     { label: '🍹 Trà atiso đỏ hạt chia',      price: 20000 },
     { label: '🍱 Cơm cuộn',                   price: 25000 },
-    { label: '🍗 Chân gà sả tắc',             price: 15000 },
+    { label: '<img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/> Chân gà sả tắc',             price: 15000 },
     { label: '🍮 Flan',                        price: 15000 },
     { label: '🥤 Trà sữa',                    price: 20000 },
   ];
