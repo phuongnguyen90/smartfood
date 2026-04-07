@@ -359,72 +359,79 @@
   .current-num .sub { font-size:0.85rem; opacity:0.8; margin-top:0.5rem; }
   .queue-list {
     background:#fff; border-radius:24px; border:1px solid var(--border);
-    padding:1.5rem; max-height:380px; overflow-y:auto;
+    padding:1.5rem; max-height:420px;
+    overflow-y:auto; overflow-x:hidden;
   }
-  .queue-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  .queue-table { min-width:480px; }
   .queue-list h4 { font-weight:700; color:var(--brown); margin-bottom:1rem; }
+
+  /* Scrollable table wrapper — chỉ scroll ngang bên trong */
+  .queue-table-wrap {
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    /* gutter nhỏ để shadow border-radius không bị clip */
+    margin:0 -0.25rem;
+    padding:0 0.25rem 0.5rem;
+  }
 
   /* TABLE */
   .queue-table {
     width:100%; border-collapse:collapse; font-size:0.825rem;
+    min-width:520px; /* đảm bảo tất cả cột đủ chỗ trước khi scroll */
+    table-layout:fixed;
   }
-  .queue-table thead tr {
-    border-bottom:2px solid var(--border);
-  }
+  .queue-table thead tr { border-bottom:2px solid var(--border); }
   .queue-table thead th {
     padding:0.45rem 0.6rem; text-align:left;
     font-size:0.72rem; font-weight:700; letter-spacing:0.06em;
     text-transform:uppercase; color:var(--text-muted);
-    white-space:nowrap;
+    white-space:nowrap; overflow:hidden;
   }
   .queue-table tbody tr {
-    border-bottom:1px solid var(--border);
-    transition:background 0.15s;
+    border-bottom:1px solid var(--border); transition:background 0.15s;
   }
   .queue-table tbody tr:last-child { border-bottom:none; }
   .queue-table tbody tr:hover { background:#FFFBF5; }
   .queue-table td {
-    padding:0.55rem 0.6rem; vertical-align:middle;
+    padding:0.55rem 0.6rem; vertical-align:top;
+    overflow:hidden;
   }
+
+  /* Định width % cho từng cột — tổng 100% */
+  .queue-table colgroup .col-num    { width:12%; }
+  .queue-table colgroup .col-name   { width:16%; }
+  .queue-table colgroup .col-status { width:20%; }
+  .queue-table colgroup .col-dish   { width:36%; }
+  .queue-table colgroup .col-total  { width:16%; }
+
   /* Col: số bàn */
-  .qt-num {
-    font-weight:800; color:var(--orange); font-size:0.9rem;
-    white-space:nowrap;
-  }
+  .qt-num { font-weight:800; color:var(--orange); font-size:0.9rem; white-space:nowrap; }
   /* Col: tên */
   .qt-name {
     font-weight:600; color:var(--brown);
-    max-width:90px; overflow:hidden;
-    text-overflow:ellipsis; white-space:nowrap;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
   /* Col: trạng thái */
   .qt-status { white-space:nowrap; }
   .qt-status span {
     font-size:0.72rem; font-weight:600; padding:3px 9px;
-    border-radius:50px; white-space:nowrap;
+    border-radius:50px; white-space:nowrap; display:inline-block;
   }
   .status-wait  { background:#FFF3E0; color:#E65100; }
   .status-ready { background:#E8F5E9; color:#2E7D32; }
   .status-done  { background:#F3E5F5; color:#6A1B9A; }
-  /* Col: món – full display, wrap per item */
-  .qt-dish { max-width:200px; }
-  .dish-wrap {
-    display:block;
-  }
+  /* Col: món – xuống dòng từng món */
+  .qt-dish { }
+  .dish-wrap { display:block; }
   .dish-text {
-    display:block;
-    color:var(--text-muted);
-    font-size:0.8rem;
-    line-height:1.8;
-    white-space:normal;
-    word-break:break-word;
+    display:block; color:var(--text-muted);
+    font-size:0.78rem; line-height:1.7;
+    white-space:normal; word-break:break-word;
   }
   /* Col: tổng tiền */
   .qt-total {
     font-weight:700; color:var(--green);
-    white-space:nowrap; text-align:right;
-    font-size:0.85rem;
+    white-space:nowrap; text-align:right; font-size:0.85rem;
   }
 
   /* QUEUE ITEM TOTAL (legacy - keep for safety) */
@@ -1305,6 +1312,10 @@
     list.innerHTML = `
       <div class="queue-table-wrap">
       <table class="queue-table">
+        <colgroup>
+          <col class="col-num"><col class="col-name">
+          <col class="col-status"><col class="col-dish"><col class="col-total">
+        </colgroup>
         <thead>
           <tr>
             <th>Số</th>
