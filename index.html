@@ -308,8 +308,27 @@
 
   /* QUEUE */
   .queue-section { background: var(--warm-white); }
-  .queue-wrap { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
-  @media(max-width:720px){ .queue-wrap{grid-template-columns:1fr;} }
+  .queue-wrap {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:3rem; align-items:start;
+  }
+  @media(max-width:860px){
+    .queue-wrap { grid-template-columns:1fr; gap:1.5rem; }
+    /* Trên mobile: form order hiện trên, display hiện dưới */
+    .queue-form   { order:1; }
+    .queue-display{ order:2; }
+    /* Thu gọn current-num trên mobile */
+    .current-num .number { font-size:3.5rem; }
+    .queue-list { max-height:260px; }
+    /* Bảng queue: ẩn cột Trạng thái trên mobile nhỏ */
+  }
+  @media(max-width:480px){
+    .queue-form { padding:1.25rem; }
+    .add-dish-row { flex-wrap:wrap; }
+    .add-dish-row select { width:100%; }
+    .queue-table thead th:nth-child(3),
+    .queue-table tbody td:nth-child(3) { display:none; }
+  }
   .queue-form {
     background:#fff; border-radius:24px;
     border:1px solid var(--border);
@@ -846,20 +865,20 @@
       <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học từ sách giáo khoa Công nghệ và Kỹ thuật thực phẩm.</p>
     </div>
     <div class="process-tabs">
-      <button class="ptab active" onclick="showProcess('scmt')">🥛  Sữa chua mix thạch</button>
-      <button class="ptab" onclick="showProcess('sctc')">🍨  Sữa chua trái cây</button>
-      <button class="ptab" onclick="showProcess('atiso')">🍹  Trà atiso hạt chia</button>
-      <button class="ptab" onclick="showProcess('com')">🍱  Cơm cuộn</button>
-      <button class="ptab" onclick="showProcess('ga')">🍗  Chân gà sả tắc</button>
-      <button class="ptab" onclick="showProcess('flan')">🍮  Flan</button>
-      <button class="ptab" onclick="showProcess('trasua')">🥤 Trà sữa</button>
+      <button class="ptab active" onclick="showProcess('scmt')">🍯 Sữa chua mix thạch</button>
+      <button class="ptab" onclick="showProcess('sctc')">🍓 Sữa chua trái cây</button>
+      <button class="ptab" onclick="showProcess('atiso')">🫖 Trà atiso hạt chia</button>
+      <button class="ptab" onclick="showProcess('com')">🌯 Cơm cuộn</button>
+      <button class="ptab" onclick="showProcess('ga')">🍗 Chân gà sả tắc</button>
+      <button class="ptab" onclick="showProcess('flan')">🍮 Flan</button>
+      <button class="ptab" onclick="showProcess('trasua')">🧋 Trà sữa</button>
     </div>
 
     <!-- 1. Sữa chua mix thạch -->
     <div id="proc-scmt" class="process-steps active fade-in">
       <div class="step"><div class="step-num">1</div><div class="step-label">Đun & để nguội</div><div class="step-text">Đun sôi 1 lít nước, dùng nhiệt kế đo và để nguội đến khoảng 50°C</div></div>
       <div class="step"><div class="step-num">2</div><div class="step-label">Pha hỗn hợp</div><div class="step-text">Đổ sữa đặc vào cốc, thêm nước ấm cho đủ 1 lít, khuấy tan. Thêm hộp sữa chua vào, trộn đều</div></div>
-      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 10–12 tiếng</div><div class="step-text">Rót hỗn hợp vào các lọ/chai/hũ, đặt vào thùng xốp, đậy nắp giữ ấm 10–12 tiếng</div></div>
+      <div class="step highlight"><div class="step-num">3</div><div class="step-label">Ủ 10–12 tiếng</div><div class="step-text">Rót hỗn hợp vào các lọ thủy tinh, đặt vào thùng xốp, đậy nắp giữ ấm 10–12 tiếng</div></div>
       <div class="step"><div class="step-num">4</div><div class="step-label">Làm lạnh</div><div class="step-text">Chuyển lọ vào tủ lạnh 4°C để sữa chua đặc mịn lại</div></div>
       <div class="step"><div class="step-num">5</div><div class="step-label">Thêm thạch & giao</div><div class="step-text">Cho thạch nhiều màu lên trên, đậy nắp chai/hũ, giao khách</div></div>
     </div>
@@ -1113,8 +1132,6 @@
 <footer>
   <div class="logo">SmartFood</div>
   <p>Dự án STEM – Gian hàng ẩm thực thông minh</p>
-  <p><span class="highlight">Khoa Công nghệ Thông tin</span> • Trường Đại học Phạm Văn Đồng</p>
-  <p style="margin-top:1rem;font-size:0.8rem;opacity:0.5">Kết hợp Khoa học · Công nghệ · Kỹ thuật · Toán học</p>
 </footer>
 
 <div class="toast" id="toast"><span class="tn" id="toastNum"></span><span id="toastMsg"></span></div>
@@ -1298,12 +1315,26 @@
 
     /* "state" event → re-render for ALL clients */
     _es.addEventListener('state', e => {
-      renderQueue(JSON.parse(e.data));
+      const state = JSON.parse(e.data);
+      renderQueue(state);
       setStatus('live');
+      // Bug fix: server toast fires with serving num (stale).
+      // If WE just registered, compute the real new num from the queue.
+      if (_pendingRegister) {
+        _pendingRegister = false;
+        _suppressNextToast = true; // suppress the server's stale toast
+        const nums = state.queue.map(q => q.num);
+        const newNum = nums.length ? Math.max(...nums) : 1;
+        showToast(`#${String(newNum).padStart(3,'0')}`, 'Đặt hàng thành công! Vui lòng chờ gọi số.');
+      }
     });
 
-    /* "toast" event → show notification for ALL clients */
+    /* "toast" event → show notification for ALL clients
+       Exception: if _pendingRegister was just cleared by our state handler,
+       skip the server toast (it carries the stale serving num). */
+    let _suppressNextToast = false;
     _es.addEventListener('toast', e => {
+      if (_suppressNextToast) { _suppressNextToast = false; return; }
       const { num, msg } = JSON.parse(e.data);
       showToast(num, msg);
     });
@@ -1319,13 +1350,14 @@
   connectSSE();
 
   /* ── POST helper (fire-and-forget; SSE does the UI update) ──────────── */
+  let _pendingRegister = false; // flag to detect our own registration
+
   async function queueAction(body) {
     await fetch('/api/queue', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).catch(err => console.error('[queue] POST failed', err));
-    /* State update arrives via SSE broadcast — no need to handle response */
   }
 
   /* ── Public actions (called from HTML onclick) ───────────────────────── */
@@ -1335,8 +1367,8 @@
     const dishItems = cart.map(c => `${c.label} ×${c.qty}`).join(', ');
     const qty       = cart.reduce((s, c) => s + c.qty, 0);
     const total     = cart.reduce((s, c) => s + c.price * c.qty, 0);
-    // Embed total into dish string so backend preserves it: "món A ×2, món B ×1|||42000"
     const dish = `${dishItems}|||${total}`;
+    _pendingRegister = true; // mark: next SSE state → show correct toast
     queueAction({ action: 'register', name, dish, qty });
     cart = [];
     renderCart();
@@ -1359,7 +1391,7 @@
 
   /* ── Password modal ──────────────────────────────────────────────────── */
   const PW_CONFIG = {
-    next:  { password: '@Aa123456', label: 'gọi số phục vụ tiếp theo' },
+    next:  { password: '123', label: 'gọi số phục vụ tiếp theo' },
     reset: { password: '123',       label: 'đặt lại toàn bộ hàng chờ' },
   };
   let _pwAction = 'next';
