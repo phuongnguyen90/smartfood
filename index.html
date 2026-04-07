@@ -309,24 +309,10 @@
   /* QUEUE */
   .queue-section { background: var(--warm-white); }
   .queue-wrap {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:3rem; align-items:start;
-  }
-  @media(max-width:860px){
-    .queue-wrap { grid-template-columns:1fr; gap:1.5rem; }
-    /* Trên mobile: form order hiện trên, display hiện dưới */
-    .queue-form   { order:1; }
-    .queue-display{ order:2; }
-    /* Thu gọn current-num trên mobile */
-    .current-num .number { font-size:3.5rem; }
-    .queue-list { max-height:260px; }
-    /* Bảng queue: ẩn cột Trạng thái trên mobile nhỏ */
-  }
-  @media(max-width:480px){
-    .queue-form { padding:1.25rem; }
-    .add-dish-row { flex-wrap:wrap; }
-    .add-dish-row select { width:100%; }
-
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:3rem;
+    align-items:start;
   }
   .queue-form {
     background:#fff; border-radius:24px;
@@ -615,11 +601,20 @@
     80%{transform:translateX(6px)}
   }
 
-  @media(max-width:768px){
-    .hero-float { display:none; }
-    .nav-links { display:none; }
+  @media(max-width:860px){
+    .hero-float  { display:none; }
+    .nav-links   { display:none; }
     .step:not(:last-child)::after { display:none; }
-    .step { min-width:100px; }
+    .step        { min-width:100px; }
+    /* Queue: stack thành 1 cột */
+    .queue-wrap  { grid-template-columns:1fr; gap:1.5rem; }
+    .current-num .number { font-size:3.5rem; }
+    .queue-list  { max-height:260px; }
+  }
+  @media(max-width:480px){
+    .queue-form  { padding:1.25rem; }
+    .add-dish-row { flex-wrap:wrap; }
+    .add-dish-row select { width:100%; }
   }
 </style>
 </head>
@@ -709,7 +704,7 @@
         <div class="section-label">Thực đơn hôm nay</div>
         <h2 class="section-title">Menu Món Ăn<br>Dinh Dưỡng & Phương Pháp</h2>
       </div>
-      <p class="section-desc" style="max-width:300px">Khám phá giá trị dinh dưỡng và phương pháp chế biến khoa học cho từng món ăn tươi ngon.</p>
+      <p class="section-desc" style="max-width:300px">Khám phá giá trị dinh dưỡng và phương pháp chế biến khoa học cho từng món ăn tươi ngon, ý nghĩa STEM trong từng món ăn.</p>
     </div>
     <div class="menu-grid">
 
@@ -862,8 +857,8 @@
   <div class="container">
     <div class="fade-in">
       <div class="section-label" style="color:var(--orange-light)">Phương pháp chế biến</div>
-      <h2 class="section-title">Quy Trình Khoa Học<br>Theo Sách Giáo Khoa</h2>
-      <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học từ sách giáo khoa Công nghệ và Kỹ thuật thực phẩm.</p>
+      <h2 class="section-title">Quy Trình Khoa Học</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6)">Sơ đồ quy trình chuẩn hoá cho từng món — áp dụng phương pháp chế biến khoa học.</p>
     </div>
     <div class="process-tabs">
       <button class="ptab active" onclick="showProcess('scmt')">🥛Sữa chua mix thạch</button>
@@ -976,8 +971,8 @@
   <div class="container">
     <div class="fade-in">
       <div class="section-label">Kết nối kiến thức</div>
-      <h2 class="section-title">Khám phá STEM<br>qua từng món ăn</h2>
-      <p class="section-desc">Mỗi món ăn là một bài học tích hợp – từ hóa học vi sinh, công nghệ chế biến, thiết kế kỹ thuật đến tính toán kinh tế.</p>
+      <h2 class="section-title">Kết nối STEM toàn dự án</h2>
+      <p class="section-desc">STEM không chỉ thể trong từng món ăn mà còn thể hiện tổng thể trong toàn dự án.</p>
     </div>
     <div class="stem-grid">
       <div class="stem-card s fade-in">
@@ -1006,9 +1001,8 @@
         <div class="stem-subject">Technology – Công nghệ</div>
         <div class="stem-title">Ứng dụng Tin học & Công nghệ</div>
         <ul class="stem-items">
-          <li>Website menu online</li>
-          <li>Thiết kế menu</li>
-          <li>Đặt hàng online</li>
+          <li>Website giới thiệu dự án</li>
+          <li>Menu và đặt hàng online</li>
         </ul>
       </div>
       <div class="stem-card e fade-in">
