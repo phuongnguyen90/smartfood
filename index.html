@@ -135,7 +135,7 @@
   }
   @keyframes floatY {
     0%,100%{transform:translateY(-50%)}
-    50%{transform:translateY(calc(-50% - 16px))}
+    50%{transform:translateY(calc(-50% - 48px))}
   }
   .food-card {
     background:#fff; border-radius:20px;
@@ -218,7 +218,7 @@
     border:1px solid var(--border);
     overflow:hidden; transition:transform 0.25s, box-shadow 0.25s;
   }
-  .menu-item:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(61,31,10,0.12); }
+  .menu-item:hover { transform:translateY(-6px); box-shadow:0 48px 48px rgba(61,31,10,0.12); }
   .menu-thumb { height:180px; display:flex; align-items:center; justify-content:center; font-size:5rem; position:relative; }
   .menu-thumb-img { width:90px; height:90px; object-fit:contain; }
   .menu-thumb.c1 { background:linear-gradient(135deg,#FFF8E1,#FFE0B2); }
@@ -486,7 +486,7 @@
   .add-dish-btn:hover { background:var(--orange-dark); }
   .cart-box {
     background:#FFF8F0; border:1.5px solid rgba(232,99,10,0.2);
-    border-radius:16px; padding:1rem 1.25rem;
+    border-radius:48px; padding:1rem 1.25rem;
     margin-bottom:1.25rem;
   }
   .cart-box-header {
@@ -597,7 +597,7 @@
   .toast {
     position:fixed; bottom:2rem; right:2rem; z-index:200;
     background:var(--brown); color:#fff;
-    border-radius:16px; padding:1rem 1.5rem;
+    border-radius:48px; padding:1rem 1.5rem;
     font-size:0.9rem; font-weight:600;
     box-shadow:0 8px 32px rgba(0,0,0,0.25);
     transform:translateY(100px); opacity:0;
@@ -795,7 +795,7 @@
 
       <!-- 5. Chân gà sả tắc -->
       <div class="menu-item fade-in">
-        <div class="menu-thumb c2"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="16"/></div>
+        <div class="menu-thumb c2"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" width="48"/></div>
         <div class="menu-body">
           <div class="menu-name">Chân gà sả tắc</div>
           <div class="menu-desc">Chân gà ngâm sốt Thái: tắc, sả, ớt, tỏi, hành tím – chua cay đặc trưng, ướp lạnh 4+ tiếng.</div>
@@ -949,19 +949,19 @@
       <p class="section-desc">Phân tích chi tiết thành phần dinh dưỡng, giúp bạn lựa chọn món ăn phù hợp với nhu cầu sức khỏe và dinh dưỡng hàng ngày.</p>
     </div>
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:3rem;">
-      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
+      <div class="fade-in" style="background:#fff; border-radius:48px; padding:2rem; border:1px solid var(--border);">
         <div style="font-size:2rem; margin-bottom:1rem;">🥗</div>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Món Ăn Healthy</h3>
         <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Sữa chua, flan với hàm lượng protein cao, ít tinh bột, phù hợp cho người ăn kiêng hoặc cần tăng cơ.</p>
         <div style="font-size:0.9rem; color:var(--green); font-weight:600;">Protein: 6-8g | Fat: 3-8g | Carbs: 12-25g</div>
       </div>
-      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
-        <div style="font-size:2rem; margin-bottom:1rem;"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" style="width: 16px;height: 16px;"/></div>
+      <div class="fade-in" style="background:#fff; border-radius:48px; padding:2rem; border:1px solid var(--border);">
+        <div style="font-size:2rem; margin-bottom:1rem;"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" style="width: 48px;height: 48px;"/></div>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Món Ăn Nhanh Năng Lượng</h3>
         <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Chân gà, cơm cuộn cung cấp protein và tinh bột, lý tưởng cho người vận động nhiều hoặc cần năng lượng.</p>
         <div style="font-size:0.9rem; color:var(--orange); font-weight:600;">Protein: 12-25g | Fat: 8-12g | Carbs: 5-50g</div>
       </div>
-      <div class="fade-in" style="background:#fff; border-radius:16px; padding:2rem; border:1px solid var(--border);">
+      <div class="fade-in" style="background:#fff; border-radius:48px; padding:2rem; border:1px solid var(--border);">
         <div style="font-size:2rem; margin-bottom:1rem;">🥤</div>
         <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--brown); margin-bottom:0.5rem;">Đồ Uống Giải Khát</h3>
         <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem;">Trà sữa với caffeine và đường, phù hợp cho những lúc cần tỉnh táo nhưng cần chú ý lượng đường.</p>
@@ -1062,7 +1062,7 @@
             <option value="2">🍨 Sữa chua trái cây – 15k/2 hũ</option>
             <option value="3">🍹 Trà atiso đỏ hạt chia – 20k/ly</option>
             <option value="4">🍱 Cơm cuộn – 25k/hộp</option>
-            <option value="5"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" style="width: 16px;height: 16px;"/> Chân gà sả tắc – 15k/hộp</option>
+            <option value="5"><img src="./icon/chicken-foot.png" alt="chicken-foot.png" style="width: 48px;height: 48px;"/> Chân gà sả tắc – 15k/hộp</option>
             <option value="6">🍮 Flan – 15k/2 hộp</option>
             <option value="7">🥤 Trà sữa – 20k/ly</option>
           </select>
