@@ -1340,23 +1340,28 @@
       renderQueue(state);
       setStatus('live');
 
-      // Fix: registration toast — use max(queue.nums) = newly assigned number
+      // Registration: show the newly assigned number (max in queue)
       if (_pendingRegister) {
         _pendingRegister = false;
         _suppressNextToast = true;
         const nums = state.queue.map(q => q.num);
         const newNum = nums.length ? Math.max(...nums) : 1;
         showToast(`#${String(newNum).padStart(3,'0')}`, 'Đặt hàng thành công! Vui lòng chờ gọi số.');
+        return;
       }
 
-      // Fix: next-queue toast — use state.serving (the correct current serving number)
+      // Next: read serving from authoritative state (backend now awaits setState)
       if (_pendingNext) {
         _pendingNext = false;
         _suppressNextToast = true;
-        if (state.serving > 0) {
+        const maxNum = state.queue.length ? Math.max(...state.queue.map(q => q.num)) : 0;
+        if (state.serving > maxNum && maxNum > 0) {
+          // serving advanced past last item → all done
+          showToast('✓', 'Đã phục vụ xong tất cả đơn hàng!');
+        } else if (state.serving > 0) {
           const sItem = state.queue.find(q => q.num === state.serving);
           const nameStr = sItem ? ` – ${sItem.name}` : '';
-          showToast(`#${String(state.serving).padStart(3,'0')}`, `Đang phục vụ${nameStr}`);
+          showToast(`#${String(state.serving).padStart(3,'0')}`, `Mời khách${nameStr}`);
         }
       }
     });
